@@ -53,3 +53,6 @@
   from { opacity: 0; transform: translate(-50%, 12px); }
   to   { opacity: 1; transform: translate(-50%, 0); }
 }
+
+/* Scene wrapper for cross-screen transitions (App.jsx). */
+.scene { display: contents; }

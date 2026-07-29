@@ -15,7 +15,7 @@ export default function AvatarPicker({ selectedId, onSelect }) {
           className={`avatar-option ${selectedId === a.id ? "avatar-option-selected" : ""}`}
           onClick={() => onSelect(a.id)}
         >
-          <Avatar color={a.color} face={a.face} size={42} />
+          <Avatar color={a.color} accent={a.accent} face={a.face} prop={a.prop} pattern={a.pattern} size={44} />
         </button>
       ))}
     </div>

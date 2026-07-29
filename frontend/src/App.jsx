@@ -1,9 +1,38 @@
 import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { socket } from "./socket";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import LobbyScreen from "./screens/LobbyScreen";
 import GameScreen from "./screens/GameScreen";
 import "./App.css";
+
+// Wraps each top-level screen with a consistent fade+lift so scene
+// changes (welcome -> lobby -> game) feel intentional, not abrupt.
+const screenVariants = {
+  initial: { opacity: 0, y: 16, filter: "blur(6px)" },
+  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  exit:    { opacity: 0, y: -12, filter: "blur(6px)" },
+};
+const screenTransition = {
+  duration: 0.42,
+  ease: [0.2, 0.8, 0.2, 1],
+};
+
+function Scene({ id, children }) {
+  return (
+    <motion.div
+      key={id}
+      className="scene"
+      variants={screenVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={screenTransition}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function App() {
   const [room, setRoom] = useState(null);
@@ -100,38 +129,52 @@ export default function App() {
 
   const me = room?.players.find((p) => p.id === myId) ?? null;
 
+  const sceneKey = !room
+    ? "welcome"
+    : !room.game?.started
+    ? "lobby"
+    : "game";
+
   return (
     <div className="app">
-      {!room && (
-        <WelcomeScreen
-          onCreateRoom={createRoom}
-          onJoinRoom={joinRoom}
-          connecting={connecting}
-          errorMessage={errorMessage}
-          onDismissError={dismissError}
-        />
-      )}
-      {room && !room.game?.started && (
-        <LobbyScreen
-          room={room}
-          me={me}
-          onSetGameMode={setGameMode}
-          onSetAiPersonality={setAiPersonality}
-          onStartGame={startGame}
-          errorMessage={errorMessage}
-          onDismissError={dismissError}
-        />
-      )}
-      {room && room.game?.started && me && (
-        <GameScreen
-          room={room}
-          me={me}
-          onSubmitScenario={submitScenario}
-          onSubmitStrategy={submitStrategy}
-          onContinueRound={continueRound}
-          onPlayAgain={playAgain}
-        />
-      )}
+      <AnimatePresence mode="wait" initial={false}>
+        {sceneKey === "welcome" && (
+          <Scene id="welcome">
+            <WelcomeScreen
+              onCreateRoom={createRoom}
+              onJoinRoom={joinRoom}
+              connecting={connecting}
+              errorMessage={errorMessage}
+              onDismissError={dismissError}
+            />
+          </Scene>
+        )}
+        {sceneKey === "lobby" && (
+          <Scene id="lobby">
+            <LobbyScreen
+              room={room}
+              me={me}
+              onSetGameMode={setGameMode}
+              onSetAiPersonality={setAiPersonality}
+              onStartGame={startGame}
+              errorMessage={errorMessage}
+              onDismissError={dismissError}
+            />
+          </Scene>
+        )}
+        {sceneKey === "game" && me && (
+          <Scene id="game">
+            <GameScreen
+              room={room}
+              me={me}
+              onSubmitScenario={submitScenario}
+              onSubmitStrategy={submitStrategy}
+              onContinueRound={continueRound}
+              onPlayAgain={playAgain}
+            />
+          </Scene>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

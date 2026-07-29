@@ -7,6 +7,7 @@
   z-index: 999;
   padding: 2rem;
   text-align: center;
+  overflow: hidden;
 }
 .transition-screen::before {
   content: "";
@@ -16,6 +17,32 @@
     repeating-linear-gradient(0deg, transparent 0 4px, rgba(255,255,255,0.03) 4px 5px),
     radial-gradient(800px 500px at 50% 50%, color-mix(in oklab, var(--violet) 25%, transparent), transparent 70%);
   pointer-events: none;
+  animation: transition-pulse 2.6s ease-in-out infinite;
+}
+.transition-screen::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in oklab, var(--violet) 18%, transparent) 90deg,
+    transparent 180deg,
+    color-mix(in oklab, var(--lime) 10%, transparent) 270deg,
+    transparent 360deg
+  );
+  pointer-events: none;
+  animation: transition-sweep 8s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes transition-pulse {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+@keyframes transition-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 .transition-screen > span {
@@ -27,6 +54,7 @@
   letter-spacing: -0.02em;
   font-weight: 700;
   line-height: 1.05;
+  will-change: transform, opacity, filter;
 }
 
 .transition-incoming > span {
@@ -57,4 +85,9 @@
   color: var(--cream);
   font-weight: 700;
   font-size: 1.15em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transition-screen::before,
+  .transition-screen::after { animation: none; }
 }
