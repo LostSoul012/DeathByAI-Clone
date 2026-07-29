@@ -78,6 +78,7 @@
   height: auto;
   transform: rotate(-3deg);
   filter: drop-shadow(0 24px 32px rgba(0, 0, 0, 0.5));
+  scale: 1.5;
 }
 
 /* text scrim, fading up from the bottom so it reads as one continuous
@@ -144,6 +145,21 @@
 @keyframes verdict-pop {
   from { opacity: 0; transform: scale(0.7); }
   to   { opacity: 1; transform: scale(1); }
+}
+
+.verdict-continue-btn {
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  animation: verdict-pop 350ms ease-out;
+}
+
+.verdict-waiting {
+  align-self: flex-start;
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--cream-mute);
+  opacity: 0.85;
 }
 
 .story-watermark {

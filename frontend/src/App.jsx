@@ -117,6 +117,12 @@ export default function App() {
     socket.emit("continue_after_round");
   }, []);
 
+  // Host-only "Continue" / "Next Player" click during the verdict reveal —
+  // see RevealSequence/StoryCard and the backend's reveal_continue handler.
+  const revealContinue = useCallback(() => {
+    socket.emit("reveal_continue");
+  }, []);
+
   const submitScenario = useCallback((scenarioText) => {
     socket.emit("submit_scenario", { scenarioText });
   }, []);
@@ -170,6 +176,7 @@ export default function App() {
               onSubmitScenario={submitScenario}
               onSubmitStrategy={submitStrategy}
               onContinueRound={continueRound}
+              onRevealContinue={revealContinue}
               onPlayAgain={playAgain}
             />
           </Scene>

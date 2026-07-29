@@ -160,6 +160,9 @@ function startGame(room) {
     results: null, // [{ username, survived, story, score }], set once judging finishes
     judgingInProgress: false,
     history: {}, // playerId -> [{ survived, score }, ...] across the whole game, oldest first
+    // Host-paced verdict reveal counter — see recordJudgingResults and
+    // socketHandlers.js's reveal_continue handler for how it advances.
+    revealCursor: 0,
   };
 
   assignRoundWriter(room, 0);
@@ -312,6 +315,9 @@ function recordJudgingResults(room, results) {
   room.game.results = results;
   room.game.judgingInProgress = false;
   room.game.phase = "revealing_results";
+  // Fresh reveal for this round — the host steps through each player's
+  // verdict one sentence at a time from the start.
+  room.game.revealCursor = 0;
 
   for (const result of results) {
     const player = room.players.find((p) => p.username === result.username);
@@ -392,6 +398,17 @@ function advanceToNextRound(room) {
   g.submissions = {};
   g.results = null;
   g.judgingInProgress = false;
+  g.revealCursor = 0;
+}
+
+// Host-only step through the verdict reveal (see socketHandlers.js's
+// reveal_continue). Each call is one "Continue" / "Next Player" click —
+// the frontend derives which player/sentence that lands on from this
+// counter plus the (already-synced) results/story text, so every client
+// advances in lockstep off the same broadcast instead of independent
+// local timers.
+function advanceRevealCursor(room) {
+  room.game.revealCursor = (room.game.revealCursor || 0) + 1;
 }
 
 // Advances the phase machine by one step. Round/game-boundary logic
@@ -428,6 +445,7 @@ function serializeGame(room) {
     strategyDeadline,
     submissions,
     results,
+    revealCursor,
   } = room.game;
   return {
     started,
@@ -448,6 +466,9 @@ function serializeGame(room) {
     // reveal needs it for the board-flip card.
     submissions: PHASES_WHERE_SUBMISSIONS_ARE_REVEALED.includes(phase) ? submissions : null,
     results,
+    // How many "Continue"/"Next Player" clicks the host has made this
+    // round's reveal — see PlayerRevealCard/StoryCard on the frontend.
+    revealCursor: revealCursor ?? 0,
     // Ranked standings, recomputed fresh each time — cheap over a handful
     // of players, and there's no spoiler concern (aggregate counts only).
     standings: computeStandings(room),
@@ -479,6 +500,7 @@ module.exports = {
   allActivePlayersSubmitted,
   handleStrategyPhaseDisconnect,
   recordJudgingResults,
+  advanceRevealCursor,
   computeStandings,
   clearScenarioTimer,
   clearStrategyTimer,

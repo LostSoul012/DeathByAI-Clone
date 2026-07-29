@@ -32,6 +32,7 @@ export default function GameScreen({
   onSubmitScenario,
   onSubmitStrategy,
   onContinueRound,
+  onRevealContinue,
   onPlayAgain,
 }) {
   const { phase, currentRound, currentScenario, scenarioWriterId, gameComplete } = room.game;
@@ -82,7 +83,14 @@ export default function GameScreen({
   }
 
   if (phase === "revealing_results") {
-    return <RevealSequence room={room} me={me} onContinue={onContinueRound} />;
+    return (
+      <RevealSequence
+        room={room}
+        me={me}
+        onContinue={onContinueRound}
+        onRevealContinue={onRevealContinue}
+      />
+    );
   }
 
   return <NotYetBuiltScreen phase={phase} />;

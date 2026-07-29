@@ -26,6 +26,7 @@ const {
   finalizeStrategyPhase,
   handleStrategyPhaseDisconnect,
   recordJudgingResults,
+  advanceRevealCursor,
   advanceToNextRound,
 } = require("./game");
 
@@ -259,6 +260,38 @@ function registerSocketHandlers(io, socket) {
       armScenarioTimer(room, () => broadcastAndMaybeJudge(io, room));
     }
     broadcastAndMaybeJudge(io, room);
+  });
+
+  // Host steps the verdict reader forward one beat: either the next
+  // sentence of the current player's story, or (once all of that
+  // player's sentences are shown) on to the next player / standings.
+  // Purely a counter bump — see RevealSequence/StoryCard on the frontend
+  // for how playerIndex/sentence is derived from it. Keeping the reveal
+  // paced by this single broadcast (instead of independent per-client
+  // timers) is also what keeps everyone's screen in sync.
+  socket.on("reveal_continue", () => {
+    const room = findRoomBySocketId(socket.id);
+    if (!room?.game) return;
+
+    const player = getPlayer(room, socket.id);
+    if (!player?.isHost) {
+      socket.emit("error_event", {
+        type: "not_host",
+        message: "Only the host can continue the verdict reveal.",
+      });
+      return;
+    }
+
+    if (room.game.phase !== "revealing_results") {
+      socket.emit("error_event", {
+        type: "cannot_continue",
+        message: "Not ready to continue yet.",
+      });
+      return;
+    }
+
+    advanceRevealCursor(room);
+    broadcastRoomUpdate(io, room);
   });
 
   // Dev/test hook only — steps the round phase machine forward one step

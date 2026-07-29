@@ -95,7 +95,7 @@ export default function WelcomeScreen({ onCreateRoom, onJoinRoom, connecting, er
                 type="text"
                 value={roomCode}
                 maxLength={4}
-                placeholder="ABCD"
+                placeholder="XXXX"
                 onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                 autoComplete="off"
               />
