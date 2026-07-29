@@ -1,0 +1,158 @@
+/* Verdict Reader — full-bleed hero: the robot dominates the scene rather
+   than sitting in a small corner beside a card, and the verdict text
+   sits in a scrim fading up from the bottom instead of a boxed-off card
+   next to it. Colors (glow, robot eyes) shift with the outcome. */
+.verdict-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 70vh;
+}
+
+.verdict-corner-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--cream);
+  opacity: 0.9;
+}
+
+.verdict-progress {
+  position: absolute;
+  top: 0.35rem;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  gap: 0.4rem;
+}
+.verdict-progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--cream-mute);
+  opacity: 0.5;
+}
+.verdict-progress-dot.is-current {
+  background: var(--violet);
+  opacity: 1;
+}
+
+/* ambient glow behind the robot, color-matched to the mood */
+.verdict-glow {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(80vw, 480px);
+  height: min(80vw, 480px);
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+  transition: background 500ms ease;
+  background: radial-gradient(circle, var(--violet), transparent 70%);
+}
+.verdict-stage.is-survive .verdict-glow { background: radial-gradient(circle, var(--lime), transparent 70%); }
+.verdict-stage.is-death .verdict-glow   { background: radial-gradient(circle, var(--coral), transparent 70%); }
+
+.verdict-robot-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding-top: 1.5rem;
+}
+
+.verdict-robot {
+  width: min(70vw, 340px);
+  height: auto;
+  transform: rotate(-3deg);
+  filter: drop-shadow(0 24px 32px rgba(0, 0, 0, 0.5));
+}
+
+/* text scrim, fading up from the bottom so it reads as one continuous
+   scene rather than a separate boxed card */
+.verdict-scrim {
+  position: relative;
+  z-index: 2;
+  margin-top: -9rem;
+  padding: 3.5rem 0.25rem 0.5rem;
+  background: linear-gradient(to top, #050408 45%, rgba(5, 4, 8, 0.92) 72%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.verdict-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--violet-hi);
+}
+
+.verdict-story {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--cream);
+  min-height: 4.5rem;
+  max-width: 560px;
+}
+
+.verdict-tag {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: 4px 4px 0 0 var(--ink);
+  animation: verdict-pop 350ms ease-out;
+}
+.verdict-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px; height: 20px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 0.75rem;
+}
+.verdict-survived { background: var(--lime); color: var(--ink); }
+.verdict-survived .verdict-icon { background: var(--ink); color: var(--lime); }
+.verdict-died     { background: var(--coral); color: #fff; }
+.verdict-died .verdict-icon { background: #fff; color: var(--coral); }
+
+@keyframes verdict-pop {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.story-watermark {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.25rem;
+  z-index: 3;
+  font-size: 0.65rem;
+  letter-spacing: 0.24em;
+  color: var(--cream-mute);
+  text-transform: uppercase;
+}

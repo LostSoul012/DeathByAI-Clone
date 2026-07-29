@@ -1,0 +1,243 @@
+.robot {
+  width: 260px;
+  height: 260px;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
+}
+
+/* ---------- base parts ---------- */
+.robot-head, .robot-torso-body, .robot-neck { stroke: var(--ink); stroke-width: 3; }
+.robot-arm-upper, .robot-hand { stroke: var(--ink); stroke-width: 3; }
+.robot-head-shine, .robot-hand-shine { fill: #FFFDF6; opacity: 0.5; }
+.robot-visor-housing { fill: var(--ink); stroke: var(--ink-2); stroke-width: 2; }
+.robot-vent { fill: var(--cream-mute); opacity: 0.8; }
+.robot-bolt, .robot-arm-joint { fill: var(--ink-2); }
+.robot-antenna-stem { fill: none; stroke: var(--cream); stroke-width: 5; stroke-linecap: round; }
+.robot-mouth-grille { fill: var(--ink-2); }
+.robot-mouth-bar { fill: var(--violet); transform-origin: center; }
+.robot-eye-iris { fill: var(--ink); }
+.robot-eyelid { fill: var(--ink); transform: scaleY(0); }
+.robot-fingers circle { fill: var(--ink-2); }
+
+/* offset darker duplicate rendered behind the real shape, for a sense of
+   physical thickness instead of a flat cutout look */
+.robot-shadow-dupe { stroke: none; fill: #857E6E; opacity: 0.9; }
+.robot-head.robot-shadow-dupe, .robot-torso-body.robot-shadow-dupe { fill: #8E8878; }
+.robot-hand.robot-shadow-dupe { fill: #6B6558; }
+.robot-ao { pointer-events: none; }
+
+/* ---------- chest: a real sunken screen instead of a flat rect ---------- */
+.robot-chest-bezel { fill: var(--ink); }
+.robot-chest-lip { fill: var(--ink-2); }
+.robot-chest-ring { fill: none; stroke: var(--cream-dim); stroke-width: 4; }
+.robot-chest-tick rect { fill: var(--cream); }
+.robot-chest-tick { transform-origin: 150px 193px; animation: chest-sweep 5s linear infinite; }
+
+/* ---------- eyes: always lit, never a flat dark circle ----------
+   idle = dim always-on backlight; survive = green; death = red.
+   The mouth design never changes between these — only color/mood does. */
+.robot-eye-idle .robot-eye-grad-inner        { stop-color: var(--violet-hi, #A78BFA); }
+.robot-eye-idle .robot-eye-grad-outer        { stop-color: var(--violet-hi, #A78BFA); stop-opacity: 0.25; }
+.robot-eye-idle .robot-eye-iris              { fill: var(--violet-hi, #A78BFA); opacity: 0.65; }
+.robot-eye-idle .robot-antenna-tip           { fill: var(--coral); filter: drop-shadow(0 0 6px var(--coral)); animation: antenna-blink 2.6s ease-in-out infinite; }
+.robot-eye-idle .robot-chest-ring            { stroke: var(--cream-dim); }
+
+.robot-eye-survive .robot-eye-grad-inner     { stop-color: var(--lime); }
+.robot-eye-survive .robot-eye-grad-outer     { stop-color: var(--lime); stop-opacity: 0.35; }
+.robot-eye-survive .robot-eye-iris           { fill: var(--lime); filter: drop-shadow(0 0 6px var(--lime)) drop-shadow(0 0 14px var(--lime)); }
+.robot-eye-survive .robot-antenna-tip        { fill: var(--lime); filter: drop-shadow(0 0 6px var(--lime)); animation: antenna-blink 2.6s ease-in-out infinite; }
+.robot-eye-survive .robot-chest-ring         { stroke: var(--lime); filter: drop-shadow(0 0 4px var(--lime)); }
+.robot-eye-survive .robot-chest-tick         { animation-duration: 2s; }
+.robot-eye-survive .robot-chest-tick rect    { fill: var(--lime); }
+
+.robot-eye-death .robot-eye-grad-inner       { stop-color: var(--coral); }
+.robot-eye-death .robot-eye-grad-outer       { stop-color: var(--coral); stop-opacity: 0.4; }
+.robot-eye-death .robot-eye-iris             { fill: var(--coral); filter: drop-shadow(0 0 7px var(--coral)) drop-shadow(0 0 16px var(--coral)); }
+.robot-eye-death .robot-antenna-tip          { fill: var(--coral); filter: drop-shadow(0 0 8px var(--coral)); }
+.robot-eye-death .robot-chest-ring           { stroke: var(--coral); filter: drop-shadow(0 0 4px var(--coral)); }
+.robot-eye-death .robot-chest-tick           { animation-duration: 2s; }
+.robot-eye-death .robot-chest-tick rect      { fill: var(--coral); }
+
+/* ---------- ominous: an optional mood layered on top of any eye color,
+   for the pre-verdict dread beat. Stiller head, rarer blink, a barely-
+   there creep-closer scale. Does NOT touch the mouth. */
+.robot-ominous .robot-head-group             { animation-duration: 9s; animation-name: head-tilt-subtle; }
+.robot-ominous .robot-eyelid                 { animation-duration: 8.5s; }
+.robot-pose-closeup.robot-ominous .robot-body-scale,
+.robot-pose-sealed.robot-ominous .robot-body-scale {
+  animation: ominous-creep 7s ease-in-out infinite;
+}
+
+/* ---------- the robot never fully sits still — and different contexts
+   move differently, not just at different colors ---------- */
+.robot-float       { transform-origin: 150px 150px; animation: float-bob 4.6s ease-in-out infinite; }
+.robot-body-scale  { transform-origin: 150px 150px; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.robot-torso-body:not(.robot-shadow-dupe) { transform-origin: 150px 202px; animation: breathe 3.2s ease-in-out infinite; }
+.robot-head-group  { transform-origin: 150px 140px; animation: head-tilt 5.4s ease-in-out infinite; }
+.robot-antenna-group { transform-origin: 150px 44px; animation: antenna-sway 3s ease-in-out infinite; }
+
+.robot-eye-left .robot-eyelid  { transform-origin: 132px 90px; animation: blink 5.2s ease-in-out infinite; }
+.robot-eye-right .robot-eyelid { transform-origin: 168px 90px; animation: blink 5.2s ease-in-out infinite; animation-delay: 0.05s; }
+
+/* Board Holder: actually gripping something gets its own slower, wider
+   "presenting" sway instead of the default idle bob */
+.robot-pose-holding.robot-has-held .robot-float { animation: float-bob-present 5.4s ease-in-out infinite; }
+.robot-pose-holding.robot-has-held .robot-body-scale { animation: present-bounce 0.7s ease-out; }
+
+/* Talking: a quicker weight-shift while narrating, on top of the head
+   nod, so speech reads in the whole body, not just the mouth */
+.robot-narrating .robot-float { animation: float-bob-talk 1.4s ease-in-out infinite; }
+.robot-narrating .robot-head-group { animation: head-nod 0.85s ease-in-out infinite; }
+
+/* Verdict: survive — perkier, bouncier, faster than the default idle */
+.robot-eye-survive:not(.robot-narrating) .robot-float { animation: float-bob-perky 2.1s ease-in-out infinite; }
+
+/* Verdict: death / fate-sealed dread — heavier, slower, barely moving */
+.robot-eye-death:not(.robot-narrating) .robot-float { animation: float-bob-somber 6s ease-in-out infinite; }
+
+/* ---------- arms: shared pivot + per-pose sway ---------- */
+.robot-arm-left  { transform-origin: 96px 191px; }
+.robot-arm-right { transform-origin: 204px 191px; }
+
+.robot-pose-reaching .robot-arm-left  { animation: sway-reach-l 3.2s ease-in-out infinite alternate; }
+.robot-pose-reaching .robot-arm-right { animation: sway-reach-r 3.2s ease-in-out infinite alternate; }
+
+.robot-pose-closeup .robot-body-scale { transform: scale(1.16); }
+.robot-pose-closeup .robot-arm-left   { animation: sway-idle-l 4s ease-in-out infinite alternate; }
+.robot-pose-closeup .robot-arm-right  { animation: sway-idle-r 4s ease-in-out infinite alternate; }
+
+/* sealed: arms held in tight and nearly still — a "judge" stance for the
+   pre-verdict dread beat, instead of reusing the same idle sway used
+   everywhere else */
+.robot-pose-sealed .robot-body-scale { transform: scale(1.14); }
+.robot-pose-sealed .robot-arm-left   { animation: sway-sealed-l 6s ease-in-out infinite alternate; }
+.robot-pose-sealed .robot-arm-right  { animation: sway-sealed-r 6s ease-in-out infinite alternate; }
+
+.robot-pose-holding .robot-arm-left  { animation: sway-hold-l 2.6s ease-in-out infinite alternate; }
+.robot-pose-holding .robot-arm-right { animation: sway-hold-r 2.6s ease-in-out infinite alternate; }
+
+/* when actually gripping something (heldContent provided), the grip is
+   locked to a fixed angle instead of swaying */
+.robot-pose-holding.robot-has-held .robot-arm-left  { animation: none; transform: rotate(-51.5deg); }
+.robot-pose-holding.robot-has-held .robot-arm-right { animation: none; transform: rotate(51.5deg); }
+
+/* random one-arm gesture while narrating: brief outward lift-and-settle,
+   overrides whatever sway animation is currently running via higher
+   selector specificity (two classes beat one) */
+.robot-arm-left.robot-gesture-active  { animation: gesture-bump-l 0.8s ease-out !important; }
+.robot-arm-right.robot-gesture-active { animation: gesture-bump-r 0.8s ease-out !important; }
+
+.robot-held-slot { overflow: visible; }
+.robot-held-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+/* mouth: idle closed, talks in short alternating bar heights while narrating */
+.robot-mouth-bar-1 { transform-origin: 131px 128.5px; }
+.robot-mouth-bar-2 { transform-origin: 144.7px 128.5px; }
+.robot-mouth-bar-3 { transform-origin: 158.3px 128.5px; }
+.robot-mouth-bar-4 { transform-origin: 172px 128.5px; }
+.robot-mouth-bar { transform: scaleY(0.3); }
+.robot-narrating .robot-mouth-bar-1 { animation: talk-a 0.42s ease-in-out infinite; }
+.robot-narrating .robot-mouth-bar-2 { animation: talk-b 0.38s ease-in-out infinite; }
+.robot-narrating .robot-mouth-bar-3 { animation: talk-a 0.35s ease-in-out infinite; animation-delay: 0.08s; }
+.robot-narrating .robot-mouth-bar-4 { animation: talk-b 0.4s ease-in-out infinite; animation-delay: 0.05s; }
+
+/* ---------- keyframes ---------- */
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-8px) rotate(-1deg); }
+}
+@keyframes float-bob-present {
+  /* wider, slower sway than the default idle bob — a "look, here it is"
+     presenting motion for Board Holder */
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%      { transform: translateY(-10px) rotate(1.8deg); }
+}
+@keyframes present-bounce {
+  /* one-shot squash/settle the moment the board is actually gripped */
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.08, 0.94); }
+  65%  { transform: scale(0.97, 1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes float-bob-talk {
+  /* quicker weight-shift while speaking, so the whole body reads as
+     talking, not just the mouth bars */
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-5px) rotate(1.2deg); }
+}
+@keyframes float-bob-perky {
+  /* higher, faster bounce for a good-news verdict */
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%      { transform: translateY(-14px) rotate(1.8deg); }
+}
+@keyframes float-bob-somber {
+  /* slow, low, heavy — barely lifts, for dread/death */
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-3px) rotate(0.3deg); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.018); }
+}
+@keyframes head-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(1.6deg); }
+}
+@keyframes head-tilt-subtle {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(0.5deg); }
+}
+@keyframes head-nod {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(3px) rotate(1.2deg); }
+}
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(0); }
+  93%           { transform: scaleY(1); }
+  96%           { transform: scaleY(0); }
+}
+@keyframes antenna-sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+@keyframes antenna-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+@keyframes chest-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes ominous-creep {
+  0%, 100% { transform: scale(1.16); }
+  50%      { transform: scale(1.185); }
+}
+
+@keyframes sway-reach-l { from { transform: rotate(-14deg); } to { transform: rotate(-24deg); } }
+@keyframes sway-reach-r { from { transform: rotate(14deg); }  to { transform: rotate(24deg); } }
+@keyframes sway-idle-l  { from { transform: rotate(-4deg); }  to { transform: rotate(-9deg); } }
+@keyframes sway-idle-r  { from { transform: rotate(4deg); }   to { transform: rotate(9deg); } }
+@keyframes sway-sealed-l { from { transform: rotate(-7deg); } to { transform: rotate(-9deg); } }
+@keyframes sway-sealed-r { from { transform: rotate(7deg); }  to { transform: rotate(9deg); } }
+@keyframes sway-hold-l  { from { transform: rotate(-48deg); } to { transform: rotate(-55deg); } }
+@keyframes sway-hold-r  { from { transform: rotate(48deg); }  to { transform: rotate(55deg); } }
+@keyframes gesture-bump-l { 0% { transform: rotate(-14deg); } 40% { transform: rotate(-34deg); } 100% { transform: rotate(-14deg); } }
+@keyframes gesture-bump-r { 0% { transform: rotate(14deg); }  40% { transform: rotate(34deg); }  100% { transform: rotate(14deg); } }
+
+@keyframes talk-a { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1.6); } }
+@keyframes talk-b { 0%, 100% { transform: scaleY(1.2); } 50% { transform: scaleY(0.35); } }
+
+/* Light-theme variant */
+[data-theme="light"] .robot-head,
+[data-theme="light"] .robot-torso-body,
+[data-theme="light"] .robot-neck,
+[data-theme="light"] .robot-arm-upper,
+[data-theme="light"] .robot-hand { fill: #fff; stroke: var(--ink); }
+[data-theme="light"] .robot-shadow-dupe { fill: #C9C2B0 !important; }
+[data-theme="light"] .robot-antenna-stem { stroke: #fff; }

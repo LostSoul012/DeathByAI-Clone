@@ -1,0 +1,28 @@
+.avatar-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.avatar-option {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+.avatar-option:hover {
+  transform: translateY(-2px);
+  border-color: var(--cream-dim);
+}
+.avatar-option-selected {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 35%, transparent),
+              3px 3px 0 0 var(--ink);
+  transform: translateY(-2px);
+}

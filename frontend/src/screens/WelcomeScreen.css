@@ -1,0 +1,149 @@
+/* Welcome — magazine-style split. Massive title stack on top, form card
+   with hard offset shadow. Everything squared. */
+.welcome {
+  margin: auto;
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding: 2rem 0;
+}
+
+.welcome-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--cream);
+  margin: 0;
+  text-transform: uppercase;
+}
+.welcome-title::before {
+  content: "◉ LIVE / S1";
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--lime);
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.welcome-title span,
+.welcome-title em {
+  font-style: normal;
+  color: var(--violet-hi);
+}
+
+.welcome-tagline {
+  margin: -0.25rem 0 0.5rem;
+  color: var(--cream-dim);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  max-width: 44ch;
+}
+
+.welcome-card {
+  background: var(--ink-2);
+  border: 2px solid var(--ink);
+  outline: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  box-shadow: 10px 10px 0 0 var(--violet);
+  position: relative;
+}
+.welcome-card::before {
+  content: "// PLAYER SETUP";
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  padding: 2px 8px;
+  background: var(--violet);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  margin-top: 0.25rem;
+}
+
+.text-input {
+  width: 100%;
+  background: var(--ink);
+  color: var(--cream);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.text-input:focus {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 30%, transparent);
+}
+
+.room-code-input {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 3px;
+  margin-top: 0.25rem;
+}
+.mode-tab {
+  background: transparent;
+  color: var(--cream-dim);
+  border: none;
+  padding: 0.7rem 1rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 120ms ease, color 120ms ease;
+}
+.mode-tab:hover { color: var(--cream); }
+.mode-tab-active {
+  background: var(--violet);
+  color: #fff;
+  box-shadow: 0 2px 0 0 var(--ink);
+}
+
+.welcome-submit {
+  margin-top: 0.5rem;
+  width: 100%;
+}

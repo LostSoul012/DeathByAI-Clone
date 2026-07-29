@@ -1,0 +1,102 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in oklab, var(--ink) 82%, transparent);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  z-index: 100;
+  animation: modal-fade 180ms ease-out;
+}
+
+.modal-card {
+  background: var(--ink-2);
+  color: var(--cream);
+  border: 2px solid var(--ink);
+  outline: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 10px 10px 0 0 var(--violet);
+  width: min(92vw, 560px);
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modal-pop 220ms cubic-bezier(.2,.8,.2,1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 2px solid var(--line);
+  background: var(--ink);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.modal-close {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--cream);
+  width: 32px; height: 32px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: background 120ms ease, color 120ms ease;
+}
+.modal-close:hover { background: var(--coral); color: #fff; border-color: var(--coral); }
+
+.modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.settings-heading {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet-hi);
+}
+
+.settings-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  color: var(--cream-dim);
+}
+
+.how-to-play {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--cream);
+  line-height: 1.45;
+}
+.how-to-play li::marker {
+  color: var(--lime);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+@keyframes modal-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-pop {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}

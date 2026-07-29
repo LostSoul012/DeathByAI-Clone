@@ -1,0 +1,118 @@
+/* Top bar shows the prompt in a persistent ticker-style strip */
+.strategy-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: -1.5rem -1.5rem 1.5rem;
+  padding: 0.75rem 1.25rem 0.9rem;
+  background: var(--ink);
+  border-bottom: 2px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+@media (min-width: 900px) {
+  .strategy-top-bar { margin: -2.5rem -2.5rem 2rem; padding: 0.9rem 2rem 1rem; }
+}
+
+.strategy-top-bar-text {
+  font-size: 0.78rem;
+  color: var(--cream-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.strategy-top-bar-text strong {
+  color: var(--lime);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-display);
+}
+
+.strategy-writing {
+  margin: auto;
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+}
+
+.strategy-heading {
+  margin: 0;
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.strategy-heading::before {
+  content: "STRATEGY //";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--coral);
+  margin-bottom: 0.6rem;
+}
+
+.strategy-box {
+  position: relative;
+  background: var(--ink-2);
+  border: 2px solid var(--ink);
+  outline: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem 2.25rem;
+  box-shadow: 8px 8px 0 0 var(--coral);
+}
+
+.strategy-label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--cream-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.strategy-input {
+  width: 100%;
+  min-height: 140px;
+  background: transparent;
+  color: var(--cream);
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.strategy-char-count {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.9rem;
+  font-size: 0.7rem;
+  color: var(--cream-mute);
+  letter-spacing: 0.1em;
+}
+
+.strategy-confirm {
+  align-self: center;
+  min-width: 220px;
+}
+
+.strategy-waiting {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+}

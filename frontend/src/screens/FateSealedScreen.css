@@ -1,0 +1,45 @@
+.fate-sealed {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.fate-sealed-text {
+  font-size: clamp(1.6rem, 5.5vw, 3rem);
+  font-weight: 700;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  min-height: 1.2em;
+  text-shadow: 0 0 24px color-mix(in oklab, var(--coral) 45%, transparent);
+}
+.fate-sealed-text::after {
+  content: "";
+  display: inline-block;
+  width: 0.6em; height: 1em;
+  vertical-align: -0.1em;
+  background: var(--coral);
+  margin-left: 0.15em;
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+
+.fate-sealed-robot-stage {
+  width: min(80vw, 420px);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  filter: drop-shadow(0 0 40px color-mix(in oklab, var(--coral) 30%, transparent));
+}
+.fate-sealed-robot {
+  width: 100%;
+  height: auto;
+  transform: scale(1.05);
+}

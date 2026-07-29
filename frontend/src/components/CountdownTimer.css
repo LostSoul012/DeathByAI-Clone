@@ -1,0 +1,28 @@
+.countdown {
+  align-self: flex-end;
+  min-width: 3ch;
+  padding: 0.4rem 0.75rem;
+  background: var(--ink-2);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--cream);
+  text-align: center;
+  line-height: 1;
+  box-shadow: 3px 3px 0 0 var(--ink);
+  font-variant-numeric: tabular-nums;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.countdown-low {
+  color: var(--coral);
+  border-color: var(--coral);
+  background: color-mix(in oklab, var(--coral) 12%, var(--ink-2));
+  animation: countdown-pulse 0.6s ease-in-out infinite alternate;
+}
+@keyframes countdown-pulse {
+  from { box-shadow: 3px 3px 0 0 var(--ink); }
+  to   { box-shadow: 3px 3px 0 0 var(--ink), 0 0 20px var(--coral); }
+}

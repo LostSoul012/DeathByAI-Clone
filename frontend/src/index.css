@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/*
+  DEATH BY //AI — brutalist arcade redesign.
+  Cream-on-ink base, thick borders, hard offset shadows, ticker labels,
+  oversized display type. Semantic accents:
+    violet  — primary/host action
+    lime    — survived / positive
+    coral   — died / danger
+    gold    — winner / championship
+  Themes only re-tint the ambient backdrop; UI chrome is theme-agnostic.
+*/
+
+:root {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Core palette */
+  --ink:        #08070C;
+  --ink-2:      #12111A;
+  --ink-3:      #1B1A24;
+  --line:       #2A2836;
+  --cream:      #F4EFE2;
+  --cream-dim:  #B8B1A0;
+  --cream-mute: #7C7668;
+
+  /* Accents */
+  --violet:      #8B5CF6;
+  --violet-hi:   #A78BFA;
+  --violet-lo:   #4C1D95;
+  --lime:        #C6FF3D;
+  --lime-ink:    #12200A;
+  --coral:       #FF5C68;
+  --coral-ink:   #2A0A0F;
+  --gold:        #FFC94D;
+  --gold-ink:    #241900;
+
+  --danger:  var(--coral);
+  --success: var(--lime);
+
+  --accent:          var(--violet);
+  --accent-hover:    var(--violet-hi);
+  --accent-ink:      #ffffff;
+
+  --ink-dark: var(--ink);
+  --ink-dark-dim: var(--cream-mute);
+  --ink-dim: var(--cream-dim);
+
+  /* Legacy variable names still referenced by inline styles */
+  --swirl-base:  var(--ink);
+  --swirl-ring-a: color-mix(in oklab, var(--violet) 55%, var(--ink));
+  --swirl-ring-b: color-mix(in oklab, var(--violet-lo) 60%, var(--ink));
+  --swirl-fg:     var(--cream);
+  --swirl-fg-dim: var(--cream-dim);
+
+  --shadow-hard: 6px 6px 0 0 var(--ink);
+  --shadow-hard-lg: 10px 10px 0 0 var(--ink);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--violet) 35%, transparent),
+                 0 24px 60px -20px color-mix(in oklab, var(--violet) 60%, transparent);
+
+  --radius: 4px;
+
+  color-scheme: dark;
+}
+
+/* Theme tints just re-color the ambient blobs behind everything.
+   Chrome (cards/buttons/type) intentionally stays consistent so the
+   design reads as one product across phases. */
+[data-theme="purple"] {
+  --swirl-base: var(--ink);
+  --swirl-ring-a: color-mix(in oklab, var(--violet) 55%, var(--ink));
+  --swirl-ring-b: color-mix(in oklab, var(--violet-lo) 65%, var(--ink));
+  --swirl-fg: var(--cream);
+  --swirl-fg-dim: var(--cream-dim);
+}
+[data-theme="dark"] {
+  --swirl-base: var(--ink);
+  --swirl-ring-a: color-mix(in oklab, var(--coral) 40%, var(--ink));
+  --swirl-ring-b: color-mix(in oklab, var(--violet-lo) 55%, var(--ink));
+  --swirl-fg: var(--cream);
+  --swirl-fg-dim: var(--cream-dim);
+}
+[data-theme="black"] {
+  --swirl-base: #050408;
+  --swirl-ring-a: #14121C;
+  --swirl-ring-b: #0A0910;
+  --swirl-fg: var(--cream);
+  --swirl-fg-dim: var(--cream-dim);
+}
+[data-theme="light"] {
+  --swirl-base: var(--cream);
+  --swirl-ring-a: color-mix(in oklab, var(--violet) 22%, var(--cream));
+  --swirl-ring-b: color-mix(in oklab, var(--gold) 25%, var(--cream));
+  --swirl-fg: var(--ink);
+  --swirl-fg-dim: var(--cream-mute);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font-family: inherit; }
+
+::selection {
+  background: var(--violet);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
+/* Base button — everything is squared, weight-heavy, offset-shadow.
+   .btn-primary is the loud violet action. .btn-ghost is the cream outline. */
+.btn {
+  --btn-bg: var(--cream);
+  --btn-fg: var(--ink);
+  --btn-shadow: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 0.85rem 1.6rem;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 0 var(--btn-shadow);
+  transition: transform 120ms cubic-bezier(.2,.8,.2,1),
+              box-shadow 120ms cubic-bezier(.2,.8,.2,1),
+              background-color 120ms ease;
+}
+.btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 0 var(--btn-shadow);
+}
+.btn:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 0 var(--btn-shadow);
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: 3px 3px 0 0 var(--btn-shadow);
+  transform: none;
+}
+
+.btn-primary {
+  --btn-bg: var(--violet);
+  --btn-fg: #fff;
+  --btn-shadow: var(--ink);
+  border-color: var(--ink);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+}
+.btn-primary:hover:not(:disabled) { --btn-bg: var(--violet-hi); }
+
+.btn-ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--swirl-fg, var(--cream));
+  --btn-shadow: transparent;
+  border-color: color-mix(in oklab, var(--swirl-fg, var(--cream)) 65%, transparent);
+  box-shadow: none;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--swirl-fg, var(--cream)) 12%, transparent);
+  transform: none;
+  box-shadow: none;
+}
+
+.mono { font-family: var(--font-mono); }
+.display { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

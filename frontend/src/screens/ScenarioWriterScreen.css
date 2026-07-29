@@ -1,0 +1,107 @@
+.scenario-writer {
+  margin: auto;
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding: 1rem 0;
+}
+
+.scenario-timebar {
+  width: 100%;
+}
+
+.scenario-writer-heading {
+  margin: 0;
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.scenario-writer-heading::before {
+  content: "SCENARIO //";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--violet-hi);
+  margin-bottom: 0.6rem;
+}
+
+.scenario-box {
+  position: relative;
+  background: var(--ink-2);
+  border: 2px solid var(--ink);
+  outline: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem 2.25rem;
+  box-shadow: 8px 8px 0 0 var(--violet);
+  min-height: 180px;
+}
+
+.scenario-preview {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.35;
+  color: var(--cream);
+}
+
+.scenario-custom-input {
+  width: 100%;
+  min-height: 140px;
+  background: transparent;
+  color: var(--cream);
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.scenario-char-count {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.9rem;
+  font-size: 0.7rem;
+  color: var(--cream-mute);
+  letter-spacing: 0.1em;
+}
+
+.scenario-controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.icon-btn {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--ink-2);
+  color: var(--cream);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.icon-btn:hover { border-color: var(--violet); color: var(--violet-hi); }
+.icon-btn-active {
+  background: var(--violet);
+  color: #fff;
+  border-color: var(--ink);
+  box-shadow: 3px 3px 0 0 var(--ink);
+}
+
+.scenario-accept {
+  align-self: center;
+  min-width: 220px;
+}

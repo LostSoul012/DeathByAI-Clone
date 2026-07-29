@@ -1,0 +1,61 @@
+.player-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.player-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  min-height: 52px;
+}
+
+.player-avatar {
+  display: grid;
+  place-items: center;
+  transition: opacity 120ms ease, filter 120ms ease;
+}
+.player-avatar-disconnected {
+  opacity: 0.4;
+  filter: grayscale(0.9);
+}
+
+.player-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--cream);
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.host-badge {
+  color: var(--gold);
+  font-size: 0.9rem;
+  filter: drop-shadow(0 0 6px color-mix(in oklab, var(--gold) 55%, transparent));
+}
+
+.player-status {
+  font-size: 0.65rem;
+  color: var(--coral);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.player-slot-empty {
+  font-size: 0.65rem;
+  color: var(--cream-mute);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

@@ -1,0 +1,87 @@
+/*
+  Backdrop stack:
+    1. --swirl-base flat color
+    2. Ambient colored blobs (the SVG circles) — heavily blurred so they
+       read as soft light-leaks, not concentric rings.
+    3. Fine dot-grid overlay (::before) — "terminal blueprint" texture.
+    4. Grain (::after) — 3% opacity SVG noise, softens flat surfaces.
+  Content sits above all of it in .swirl-content.
+*/
+.swirl-wrap {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--swirl-base);
+  isolation: isolate;
+}
+
+.swirl-base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 800px at 15% 0%, color-mix(in oklab, var(--swirl-ring-a) 40%, transparent), transparent 60%),
+    radial-gradient(1000px 700px at 100% 100%, color-mix(in oklab, var(--swirl-ring-b) 55%, transparent), transparent 60%),
+    var(--swirl-base);
+  z-index: 0;
+}
+
+/* Dot grid — subtle, always on */
+.swirl-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(color-mix(in oklab, var(--swirl-fg) 12%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: 0 0;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Grain */
+.swirl-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>");
+}
+
+.swirl-svg {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  z-index: 0;
+  filter: blur(90px) saturate(140%);
+  opacity: 0.55;
+  animation: swirl-drift 40s linear infinite;
+  mix-blend-mode: screen;
+}
+
+[data-theme="light"] .swirl-svg { mix-blend-mode: multiply; opacity: 0.35; }
+[data-theme="black"] .swirl-svg { opacity: 0.35; }
+
+@keyframes swirl-drift {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.swirl-content {
+  position: relative;
+  z-index: 5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .swirl-content { padding: 2.5rem; }
+}

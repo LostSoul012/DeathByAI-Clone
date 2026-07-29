@@ -1,0 +1,24 @@
+.round-history-icons {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.round-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.round-icon-survived { background: var(--lime);  color: var(--ink); }
+.round-icon-died     { background: var(--coral); color: #fff; }
+.round-icon-empty    {
+  background: transparent;
+  border-color: color-mix(in oklab, var(--ink) 25%, transparent);
+  color: transparent;
+}

@@ -1,0 +1,24 @@
+.time-bar-track {
+  width: 100%;
+  height: 6px;
+  background: color-mix(in oklab, var(--cream) 12%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.time-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime), var(--violet-hi));
+  transition: width 200ms linear, background 200ms ease;
+  box-shadow: 0 0 12px color-mix(in oklab, var(--violet) 50%, transparent);
+}
+.time-bar-fill-low {
+  background: var(--coral);
+  box-shadow: 0 0 12px var(--coral);
+  animation: bar-flash 0.6s ease-in-out infinite alternate;
+}
+@keyframes bar-flash {
+  from { opacity: 0.75; }
+  to   { opacity: 1; }
+}
