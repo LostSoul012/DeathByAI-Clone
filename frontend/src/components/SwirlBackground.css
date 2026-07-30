@@ -53,7 +53,7 @@
    trade-off of this approach.) */
 .swirl-wrap {
   --dot-tile: 22px;
-  --dot-drift-duration: 3.5s;
+  --dot-drift-duration: 0.4s;
 }
 .swirl-wrap::before {
   content: "";

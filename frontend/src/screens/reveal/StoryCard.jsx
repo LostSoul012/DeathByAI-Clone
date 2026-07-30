@@ -110,7 +110,7 @@ export default function StoryCard({
 
           {isComplete &&
             (isHost ? (
-              <button type="button" className="verdict-action-btn" onClick={onRevealContinue}>
+              <button type="button" className="btn btn-primary verdict-continue-btn" onClick={onRevealContinue}>
                 {continueLabel}
               </button>
             ) : (
