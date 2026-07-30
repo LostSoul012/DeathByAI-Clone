@@ -13,9 +13,16 @@
   content: "";
   position: absolute;
   inset: 0;
+  /* farthest-corner (the default sizing keyword, made explicit here) makes
+     the radial gradient always scale so it reaches every corner of the
+     screen, whatever the viewport size/aspect ratio. The previous fixed
+     "800px 500px" size was tuned for a phone-sized screen — on a wider
+     desktop window it stayed that same small size, so the four corners
+     just fell back to flat --ink black with a hard, visible edge instead
+     of blending into the glow. */
   background:
     repeating-linear-gradient(0deg, transparent 0 4px, rgba(255,255,255,0.03) 4px 5px),
-    radial-gradient(800px 500px at 50% 50%, color-mix(in oklab, var(--violet) 25%, transparent), transparent 70%);
+    radial-gradient(farthest-corner at 50% 50%, color-mix(in oklab, var(--violet) 25%, transparent) 0%, transparent 70%);
   pointer-events: none;
   animation: transition-pulse 2.6s ease-in-out infinite;
 }

@@ -39,12 +39,24 @@ export default function StoryCard({
   const currentSentenceText = sentences[clampedShown - 1] ?? result.story ?? "";
 
   const { displayedText: typedCurrent, isComplete } = useTypewriter(currentSentenceText, 26);
-  const { speak, isSpeaking } = useSpeech();
+  const { speak } = useSpeech();
 
   useEffect(() => {
     if (currentSentenceText) speak(currentSentenceText);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSentenceText]);
+
+  // The mouth animation is driven by the typewriter (isComplete), NOT by
+  // the browser's speechSynthesis isSpeaking state. Web Speech is
+  // unreliable across browsers/devices — voices can still be loading,
+  // autoplay policy can block it until a user gesture, or a fast repeat
+  // cancel()+speak() (see useSpeech) can silently drop an utterance so
+  // onstart never fires. Any of those left the mouth simply never
+  // animating some of the time. The typewriter runs on our own timer and
+  // always ticks, so tying the mouth to "is this sentence still being
+  // typed out" makes the animation fire every single time, regardless of
+  // whether real speech audio happens to be playing alongside it.
+  const isTalking = Boolean(currentSentenceText) && !isComplete;
 
   const displayedText = previousText ? `${previousText} ${typedCurrent}` : typedCurrent;
   const verdictSettled = isComplete && isLastSentence;
@@ -57,9 +69,12 @@ export default function StoryCard({
 
   return (
     <div className={`verdict-stage ${moodClass}`}>
-      <div className="verdict-corner-tag">
-        <Avatar {...getAvatarById(player.avatarId)} size={32} />
-        <span>{player.username}</span>
+      <div className="verdict-player-card">
+        <Avatar {...getAvatarById(player.avatarId)} size={52} />
+        <div className="verdict-player-text">
+          <span className="verdict-player-step mono">player {playerIndex + 1} of {totalPlayers}</span>
+          <span className="verdict-player-name">{player.username}</span>
+        </div>
       </div>
 
       <div className="verdict-progress" aria-hidden="true">
@@ -71,28 +86,37 @@ export default function StoryCard({
       <div className="verdict-glow" />
 
       <div className="verdict-robot-wrap">
-        <Robot pose="holding" narrating={isSpeaking} eyeState={eyeState} className="verdict-robot" />
+        <Robot pose="holding" narrating={isTalking} eyeState={eyeState} className="verdict-robot" />
       </div>
 
       <div className="verdict-scrim">
         <span className="verdict-label mono">// AI JUDGE VERDICT</span>
         <p className="verdict-story">{displayedText}</p>
 
-        {verdictSettled && (
-          <div className={`verdict-tag ${result.survived ? "verdict-survived" : "verdict-died"}`}>
-            <span className="verdict-icon">{result.survived ? "✓" : "☠"}</span>
-            {player.username} {result.survived ? "survived" : "did not survive"}
-          </div>
-        )}
+        {/* Fixed-height slot, always present, regardless of which of the
+            three states (still typing / button / waiting-for-host) is
+            showing. Previously the tag+button block only existed in the
+            DOM once isComplete flipped true, so the scrim's height (and
+            everything above it) jumped every single time a sentence
+            finished or the host clicked through — this reserves the max
+            space up front so nothing above it ever moves. */}
+        <div className="verdict-footer">
+          {verdictSettled && (
+            <div className={`verdict-tag ${result.survived ? "verdict-survived" : "verdict-died"}`}>
+              <span className="verdict-icon">{result.survived ? "✓" : "☠"}</span>
+              {player.username} {result.survived ? "survived" : "did not survive"}
+            </div>
+          )}
 
-        {isComplete &&
-          (isHost ? (
-            <button type="button" className="btn btn-primary verdict-continue-btn" onClick={onRevealContinue}>
-              {continueLabel}
-            </button>
-          ) : (
-            <p className="verdict-waiting mono">waiting for host to continue…</p>
-          ))}
+          {isComplete &&
+            (isHost ? (
+              <button type="button" className="verdict-action-btn" onClick={onRevealContinue}>
+                {continueLabel}
+              </button>
+            ) : (
+              <p className="verdict-waiting mono">waiting for host to continue…</p>
+            ))}
+        </div>
       </div>
 
       <span className="story-watermark mono">DEATH BY_AI</span>

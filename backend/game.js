@@ -155,6 +155,13 @@ function startGame(room) {
     scenarioDeadline: null,
     strategyDeadline: null,
     submissions: {}, // playerId -> strategy text, reset each round
+    // playerId -> latest in-progress (unsubmitted) strategy text, streamed
+    // in from the client as they type. Server-only — deliberately left out
+    // of serializeGame so nobody else can see a live draft before it's
+    // submitted. Used as the fallback in finalizeStrategyPhase instead of
+    // "" when someone runs out the clock without clicking Confirm — see
+    // updateStrategyDraft for why this replaced a client-side timer race.
+    drafts: {},
     scenarioTimeoutHandle: null,
     strategyTimeoutHandle: null,
     results: null, // [{ username, survived, story, score }], set once judging finishes
@@ -238,6 +245,7 @@ function submitScenario(room, scenarioText) {
   g.currentScenario = (scenarioText || "").slice(0, limit);
   g.phase = "writing_prompts";
   g.submissions = {};
+  g.drafts = {};
 }
 
 // Call this right after entering writing_prompts.
@@ -250,6 +258,24 @@ function armStrategyTimer(room, broadcastFn, msOverride) {
     finalizeStrategyPhase(room);
     broadcastFn(room);
   }, ms);
+}
+
+// Records a player's current in-progress strategy text as they type, so
+// finalizeStrategyPhase has something real to fall back to instead of ""
+// if they run out the clock without clicking Confirm. Best-effort by
+// design: silently no-ops outside writing_prompts or once a player has
+// already submitted, rather than throwing — this is called on a debounce
+// from every keystroke, not a deliberate user action, so it shouldn't be
+// surfaced as an error the way a real submit failure would be.
+function updateStrategyDraft(room, playerId, draftText) {
+  const g = room.game;
+  if (g.phase !== "writing_prompts") return;
+  const player = room.players.find((p) => p.id === playerId);
+  if (!player || !isPlayerActive(room, player)) return;
+  if (playerId in g.submissions) return;
+
+  const limit = getTimerConfig(room.gameMode).strategyCharLimit;
+  g.drafts[playerId] = (draftText || "").slice(0, limit);
 }
 
 // Records one player's strategy. Returns true if every active player has
@@ -277,16 +303,19 @@ function allActivePlayersSubmitted(room) {
   return activeIds.length > 0 && activeIds.every((id) => id in room.game.submissions);
 }
 
-// Fills in an empty string for anyone active who never submitted, and
-// moves to judging. Called either when everyone's submitted early, when
-// the timer runs out, or when a disconnect means everyone remaining HAS
-// submitted (see handleStrategyPhaseDisconnect).
+// Fills in each active player who never formally submitted with their
+// last-known draft (falling back to "" only if they never typed anything
+// at all), and moves to judging. Called either when everyone's submitted
+// early, when the server's own strategy timer runs out (the only clock
+// that decides this — see updateStrategyDraft's comment for why the
+// client no longer runs a competing one), or when a disconnect means
+// everyone remaining HAS submitted (see handleStrategyPhaseDisconnect).
 function finalizeStrategyPhase(room) {
   const g = room.game;
   clearStrategyTimer(room);
   for (const player of getActivePlayers(room)) {
     if (!(player.id in g.submissions)) {
-      g.submissions[player.id] = "";
+      g.submissions[player.id] = g.drafts[player.id] || "";
     }
   }
   g.phase = "judging";
@@ -496,6 +525,7 @@ module.exports = {
   submitScenario,
   armStrategyTimer,
   submitStrategy,
+  updateStrategyDraft,
   finalizeStrategyPhase,
   allActivePlayersSubmitted,
   handleStrategyPhaseDisconnect,

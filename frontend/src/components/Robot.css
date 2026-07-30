@@ -136,16 +136,24 @@
   align-items: stretch;
 }
 
-/* mouth: idle closed, talks in short alternating bar heights while narrating */
+/* mouth: idle closed, talks in short alternating bar heights while
+   narrating. The transition (not just the keyframe animation) is what
+   makes starting/stopping smooth: when .robot-narrating is toggled off
+   mid-cycle, the keyframe animation is removed and the bar reverts to
+   its plain `transform` below — with a transition on that same property,
+   the browser eases it back to closed instead of snapping there in a
+   single frame. Each bar also gets its own animation-delay so all four
+   never move in lockstep — that's what reads as "talking" rather than
+   a single mechanical pulse. */
 .robot-mouth-bar-1 { transform-origin: 131px 128.5px; }
 .robot-mouth-bar-2 { transform-origin: 144.7px 128.5px; }
 .robot-mouth-bar-3 { transform-origin: 158.3px 128.5px; }
 .robot-mouth-bar-4 { transform-origin: 172px 128.5px; }
-.robot-mouth-bar { transform: scaleY(0.3); }
-.robot-narrating .robot-mouth-bar-1 { animation: talk-a 0.42s ease-in-out infinite; }
-.robot-narrating .robot-mouth-bar-2 { animation: talk-b 0.38s ease-in-out infinite; }
-.robot-narrating .robot-mouth-bar-3 { animation: talk-a 0.35s ease-in-out infinite; animation-delay: 0.08s; }
-.robot-narrating .robot-mouth-bar-4 { animation: talk-b 0.4s ease-in-out infinite; animation-delay: 0.05s; }
+.robot-mouth-bar { transform: scaleY(0.3); transition: transform 0.16s ease-out; }
+.robot-narrating .robot-mouth-bar-1 { animation: talk-a 0.44s cubic-bezier(0.45, 0, 0.55, 1) infinite; animation-delay: 0s; }
+.robot-narrating .robot-mouth-bar-2 { animation: talk-b 0.5s  cubic-bezier(0.45, 0, 0.55, 1) infinite; animation-delay: 0.11s; }
+.robot-narrating .robot-mouth-bar-3 { animation: talk-a 0.4s  cubic-bezier(0.45, 0, 0.55, 1) infinite; animation-delay: 0.2s; }
+.robot-narrating .robot-mouth-bar-4 { animation: talk-b 0.46s cubic-bezier(0.45, 0, 0.55, 1) infinite; animation-delay: 0.06s; }
 
 /* ---------- keyframes ---------- */
 @keyframes float-bob {
@@ -230,8 +238,18 @@
 @keyframes gesture-bump-l { 0% { transform: rotate(-14deg); } 40% { transform: rotate(-34deg); } 100% { transform: rotate(-14deg); } }
 @keyframes gesture-bump-r { 0% { transform: rotate(14deg); }  40% { transform: rotate(34deg); }  100% { transform: rotate(14deg); } }
 
-@keyframes talk-a { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1.6); } }
-@keyframes talk-b { 0%, 100% { transform: scaleY(1.2); } 50% { transform: scaleY(0.35); } }
+@keyframes talk-a {
+  0%, 100% { transform: scaleY(0.3); }
+  30%      { transform: scaleY(1.1); }
+  55%      { transform: scaleY(1.5); }
+  80%      { transform: scaleY(0.65); }
+}
+@keyframes talk-b {
+  0%, 100% { transform: scaleY(1.15); }
+  35%      { transform: scaleY(0.55); }
+  60%      { transform: scaleY(0.3); }
+  85%      { transform: scaleY(0.9); }
+}
 
 /* Light-theme variant */
 [data-theme="light"] .robot-head,

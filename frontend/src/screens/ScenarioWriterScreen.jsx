@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import SwirlBackground from "../components/SwirlBackground";
 import CountdownTimer from "../components/CountdownTimer";
 import TimeBar from "../components/TimeBar";
+import { useCountdown } from "../hooks/useCountdown";
 import { PRESET_SCENARIOS } from "../data/scenarios";
 import { getTimerConfig } from "../data/timerConfig";
 import "./ScenarioWriterScreen.css";
@@ -11,6 +12,7 @@ export default function ScenarioWriterScreen({ room, onSubmitScenario }) {
   const [mode, setMode] = useState("preset"); // "preset" | "custom"
   const [presetIndex, setPresetIndex] = useState(() => Math.floor(Math.random() * PRESET_SCENARIOS.length));
   const [customText, setCustomText] = useState("");
+  const { secondsRemaining, fractionRemaining, isLow } = useCountdown(room.game.scenarioDeadline);
 
   const charLimit = getTimerConfig(room.gameMode).scenarioCharLimit;
   const currentText = mode === "preset" ? PRESET_SCENARIOS[presetIndex] : customText;
@@ -33,9 +35,9 @@ export default function ScenarioWriterScreen({ room, onSubmitScenario }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <CountdownTimer deadline={room.game.scenarioDeadline} />
+        <CountdownTimer seconds={secondsRemaining} isLow={isLow} />
         <div className="scenario-timebar">
-          <TimeBar deadline={room.game.scenarioDeadline} />
+          <TimeBar fraction={fractionRemaining} isLow={isLow} />
         </div>
         <h1 className="scenario-writer-heading display">
           {mode === "custom" ? "Enter a Deadly Scenario" : "Confirm your scenario"}

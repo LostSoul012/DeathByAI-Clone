@@ -131,6 +131,13 @@ export default function App() {
     socket.emit("submit_strategy", { strategyText });
   }, []);
 
+  // Streamed to the server (debounced) as the player types — see
+  // StrategyWritingScreen and the backend's update_strategy_draft handler
+  // for why this replaced a client-side auto-submit timer.
+  const updateStrategyDraft = useCallback((strategyText) => {
+    socket.emit("update_strategy_draft", { strategyText });
+  }, []);
+
   const dismissError = useCallback(() => setErrorMessage(null), []);
 
   const me = room?.players.find((p) => p.id === myId) ?? null;
@@ -175,6 +182,7 @@ export default function App() {
               me={me}
               onSubmitScenario={submitScenario}
               onSubmitStrategy={submitStrategy}
+              onUpdateStrategyDraft={updateStrategyDraft}
               onContinueRound={continueRound}
               onRevealContinue={revealContinue}
               onPlayAgain={playAgain}

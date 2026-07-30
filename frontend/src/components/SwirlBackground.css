@@ -26,18 +26,53 @@
   z-index: 0;
 }
 
-/* Dot grid — subtle, always on */
+/* Dot grid — subtle, always on, and drifting diagonally as one field.
+   HOW TO TUNE:
+   - Speed: lower --dot-drift-duration = faster (it's a full-loop time, not
+     a delay). Currently 3.5s.
+   - Direction: the keyframes translate from 0,0 to -22px,-22px (bottom-
+     right -> top-left). Flip a sign to change direction, e.g.
+     `-22px 22px` for bottom-left -> top-right. The two numbers MUST match
+     --dot-tile (22px) in magnitude — that's what makes the loop seamless
+     (the pattern lines back up with itself exactly one tile later, so
+     there's no visible jump/restart). The -22px inset below is what
+     supplies the one full tile of overflow that translate consumes
+     without ever revealing a bare edge.
+   - Density/size: --dot-tile controls spacing; the radius (currently 1px)
+     and opacity (currently 12%) are in the radial-gradient below.
+
+   This animates `transform` rather than `background-position`. Both look
+   identical, but background-position forces the browser to repaint the
+   dot pattern on every single frame, while transform just repositions an
+   already-painted, GPU-composited layer — meaningfully cheaper given this
+   runs continuously, on effectively every screen, for the entire session.
+   (One side effect: the vignette mask below now drifts by that same ~22px
+   along with the dots rather than staying perfectly still. At this scale,
+   against a mask that fades softly over hundreds of pixels, it's not
+   visible in practice — but flagging it since it's a real, if inert,
+   trade-off of this approach.) */
+.swirl-wrap {
+  --dot-tile: 22px;
+  --dot-drift-duration: 3.5s;
+}
 .swirl-wrap::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -22px;
   background-image:
     radial-gradient(color-mix(in oklab, var(--swirl-fg) 12%, transparent) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background-size: var(--dot-tile) var(--dot-tile);
   background-position: 0 0;
   mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
   z-index: 1;
   pointer-events: none;
+  will-change: transform;
+  animation: dot-drift var(--dot-drift-duration) linear infinite;
+}
+
+@keyframes dot-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(calc(-1 * var(--dot-tile)), calc(-1 * var(--dot-tile)), 0); }
 }
 
 /* Grain */

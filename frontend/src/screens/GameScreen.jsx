@@ -31,6 +31,7 @@ export default function GameScreen({
   me,
   onSubmitScenario,
   onSubmitStrategy,
+  onUpdateStrategyDraft,
   onContinueRound,
   onRevealContinue,
   onPlayAgain,
@@ -75,7 +76,14 @@ export default function GameScreen({
   }
 
   if (phase === "writing_prompts") {
-    return <StrategyWritingScreen room={room} me={me} onSubmitStrategy={onSubmitStrategy} />;
+    return (
+      <StrategyWritingScreen
+        room={room}
+        me={me}
+        onSubmitStrategy={onSubmitStrategy}
+        onUpdateStrategyDraft={onUpdateStrategyDraft}
+      />
+    );
   }
 
   if (phase === "judging") {

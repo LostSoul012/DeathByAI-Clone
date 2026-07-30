@@ -23,6 +23,7 @@ const {
   submitScenario,
   armStrategyTimer,
   submitStrategy,
+  updateStrategyDraft,
   finalizeStrategyPhase,
   handleStrategyPhaseDisconnect,
   recordJudgingResults,
@@ -228,6 +229,20 @@ function registerSocketHandlers(io, socket) {
     } catch (err) {
       socket.emit("error_event", { type: "cannot_submit_strategy", message: err.message });
     }
+  });
+
+  // Streamed in (debounced) from StrategyWritingScreen as the player
+  // types — no broadcast, no client-visible error. This is what
+  // finalizeStrategyPhase falls back to for anyone who runs the clock out
+  // instead of clicking Confirm, so their actual typed text survives even
+  // though they never formally submitted. Deliberately silent/no-op on
+  // any failure: a draft update racing the phase already having moved on
+  // is expected and harmless, not something the player needs to see an
+  // error toast about.
+  socket.on("update_strategy_draft", ({ strategyText } = {}) => {
+    const room = findRoomBySocketId(socket.id);
+    if (!room?.game) return;
+    updateStrategyDraft(room, socket.id, strategyText);
   });
 
   // The real "Continue" trigger from the Standings screen — host-only.

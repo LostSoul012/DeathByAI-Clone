@@ -1,29 +1,41 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SwirlBackground from "../components/SwirlBackground";
 import CountdownTimer from "../components/CountdownTimer";
 import TimeBar from "../components/TimeBar";
+import { useCountdown } from "../hooks/useCountdown";
 import { getTimerConfig } from "../data/timerConfig";
 import { getActivePlayers } from "../data/gameLogic";
-import { useCountdown } from "../hooks/useCountdown";
 import "./StrategyWritingScreen.css";
 
-export default function StrategyWritingScreen({ room, me, onSubmitStrategy }) {
+const DRAFT_DEBOUNCE_MS = 400;
+
+// Auto-submit-on-timeout used to be decided here, on the client, off its
+// own local countdown — racing against the server's OWN independent
+// strategy timer. Clock skew/network latency meant the server's timer
+// could (and sometimes did) fire first, finalizing the round with a
+// blank submission before this component's late auto-submit even
+// reached it — silently discarding whatever the player had actually
+// typed. There's now only one clock that matters: the server's. This
+// component's only job is to keep the server's copy of the draft
+// current (debounced, so it's not a socket message per keystroke) so
+// that when the server's timer fires, it already has the real text to
+// fall back to — see updateStrategyDraft/finalizeStrategyPhase in
+// backend/game.js.
+export default function StrategyWritingScreen({ room, me, onSubmitStrategy, onUpdateStrategyDraft }) {
   const [text, setText] = useState("");
   const hasSubmitted = room.game.submittedPlayerIds.includes(me.id);
   const charLimit = getTimerConfig(room.gameMode).strategyCharLimit;
-  const { secondsRemaining } = useCountdown(room.game.strategyDeadline);
+  const { secondsRemaining, fractionRemaining, isLow } = useCountdown(room.game.strategyDeadline);
 
   const activeCount = getActivePlayers(room).length;
   const submittedCount = room.game.submittedPlayerIds.length;
 
-  const autoSubmittedRef = useRef(false);
   useEffect(() => {
-    if (secondsRemaining === 0 && !hasSubmitted && !autoSubmittedRef.current) {
-      autoSubmittedRef.current = true;
-      onSubmitStrategy(text);
-    }
-  }, [secondsRemaining, hasSubmitted, text, onSubmitStrategy]);
+    if (hasSubmitted) return undefined;
+    const t = setTimeout(() => onUpdateStrategyDraft(text), DRAFT_DEBOUNCE_MS);
+    return () => clearTimeout(t);
+  }, [text, hasSubmitted, onUpdateStrategyDraft]);
 
   function handleConfirm() {
     if (hasSubmitted) return;
@@ -36,7 +48,7 @@ export default function StrategyWritingScreen({ room, me, onSubmitStrategy }) {
         <span className="strategy-top-bar-text mono">
           Prompt: <strong>{room.game.currentScenario}</strong>
         </span>
-        <TimeBar deadline={room.game.strategyDeadline} />
+        <TimeBar fraction={fractionRemaining} isLow={isLow} />
       </div>
 
       <motion.div
@@ -45,7 +57,7 @@ export default function StrategyWritingScreen({ room, me, onSubmitStrategy }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <CountdownTimer deadline={room.game.strategyDeadline} />
+        <CountdownTimer seconds={secondsRemaining} isLow={isLow} />
         <h1 className="strategy-heading display">Enter your survival strategy</h1>
 
         {hasSubmitted ? (
