@@ -50,7 +50,7 @@ export default function PodiumWinnerScreen({ room, isHost, onPlayAgain }) {
   const rest = groups.slice(3);
 
   return (
-    <SwirlBackground theme="light">
+    <SwirlBackground theme="black">
       <div className="winner-screen">
         <h1 className="winner-heading display">
           {first?.players.length > 1 ? "It's a tie!" : "We have a survivor!"}

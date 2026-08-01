@@ -17,7 +17,7 @@ export default function StandingsScreen({ room, isHost, onContinue }) {
   }
 
   return (
-    <SwirlBackground theme="light">
+    <SwirlBackground theme="black">
       <div className="standings-screen">
         <h1 className="standings-heading display">Standings</h1>
         <p className="standings-round mono">{roundLabel}</p>

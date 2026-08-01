@@ -217,9 +217,9 @@ export default function Robot({
                 </div>
               </foreignObject>
               <circle className="robot-hand robot-hand-grip robot-hand-grip-left" cx="47" cy="252" r="24" fill={`url(#${uid}-metal-arm)`} />
-              <Fingers cx={47} cy={252} dir={-1} />
+              <Fingers cx={47} cy={252} dir={1} />
               <circle className="robot-hand robot-hand-grip robot-hand-grip-right" cx="253" cy="252" r="24" fill={`url(#${uid}-metal-arm)`} />
-              <Fingers cx={253} cy={252} dir={1} />
+              <Fingers cx={253} cy={252} dir={-1} />
             </>
           )}
         </g>
@@ -228,7 +228,12 @@ export default function Robot({
   );
 }
 
-/** Small finger cluster near a hand's outer edge — `dir` is -1 (left hand, fingers point further left) or 1 (right hand). */
+/** Small finger cluster near a hand's inner edge, curling toward whatever
+    the hand is gripping — `dir` is 1 (left hand, fingers point right/
+    inward toward the held object) or -1 (right hand, fingers point left/
+    inward). This used to be backwards: both hands' fingers pointed
+    outward, away from the board they're supposedly holding, rather than
+    wrapping in toward it. */
 function Fingers({ cx, cy, dir }) {
   const tipX = cx + dir * 20;
   return (

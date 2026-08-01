@@ -19,6 +19,6 @@
 .round-icon-died     { background: var(--coral); color: #fff; }
 .round-icon-empty    {
   background: transparent;
-  border-color: color-mix(in oklab, var(--ink) 25%, transparent);
+  border-color: color-mix(in oklab, var(--cream) 22%, transparent);
   color: transparent;
 }

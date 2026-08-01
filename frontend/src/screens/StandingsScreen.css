@@ -1,4 +1,6 @@
-/* Light-theme aftermath — cream base, ink type */
+/* Dark-theme aftermath — matches the rest of the app now, ink base,
+   cream type. Was a deliberate light-theme break (cream base, ink type)
+   before — reverted per feedback that it clashed with everything else. */
 .standings-screen {
   margin: auto;
   width: 100%;
@@ -7,7 +9,7 @@
   flex-direction: column;
   gap: 1.25rem;
   padding: 1rem 0 3rem;
-  color: var(--ink);
+  color: var(--cream);
 }
 
 .standings-heading {
@@ -17,7 +19,7 @@
   line-height: 0.9;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--cream);
 }
 .standings-heading::before {
   content: "// LEADERBOARD";
@@ -53,15 +55,15 @@
   align-items: center;
   gap: 1rem;
   padding: 0.7rem 1rem;
-  background: #fffdf6;
-  border: 2px solid var(--ink);
+  background: var(--ink-2);
+  border: 2px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 4px 4px 0 0 var(--ink);
+  box-shadow: 4px 4px 0 0 var(--line);
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
 .standings-row:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 0 var(--ink);
+  box-shadow: 6px 6px 0 0 var(--line);
 }
 .standings-row:nth-child(1) { border-color: var(--gold); box-shadow: 4px 4px 0 0 var(--gold); }
 .standings-row:nth-child(2) { border-color: var(--violet); box-shadow: 4px 4px 0 0 var(--violet); }
@@ -71,7 +73,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
-  color: var(--ink);
+  color: var(--cream);
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;

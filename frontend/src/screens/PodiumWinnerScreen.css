@@ -7,7 +7,7 @@
   align-items: center;
   gap: 1.75rem;
   padding: 1rem 0 3rem;
-  color: var(--ink);
+  color: var(--cream);
 }
 
 .winner-heading {
@@ -17,7 +17,7 @@
   line-height: 0.9;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--cream);
   text-align: center;
   position: relative;
 }
@@ -29,7 +29,8 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   color: var(--gold);
-  background: var(--ink);
+  background: var(--ink-2);
+  border: 1px solid var(--line);
   padding: 4px 12px;
   border-radius: 999px;
   width: max-content;
@@ -69,7 +70,7 @@
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--cream);
   max-width: 100px;
   text-align: center;
   word-break: break-word;
@@ -81,7 +82,7 @@
   place-items: center;
   border: 2px solid var(--ink);
   border-radius: var(--radius);
-  box-shadow: 6px 6px 0 0 var(--ink);
+  box-shadow: 6px 6px 0 0 var(--line);
   color: var(--ink);
   font-weight: 700;
   text-transform: uppercase;
@@ -116,10 +117,10 @@
   margin: 0;
   width: 100%;
   max-width: 520px;
-  background: #fffdf6;
-  border: 2px solid var(--ink);
+  background: var(--ink-2);
+  border: 2px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 4px 4px 0 0 var(--ink);
+  box-shadow: 4px 4px 0 0 var(--line);
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -127,7 +128,7 @@
 .winner-rest-row {
   font-size: 0.85rem;
   letter-spacing: 0.02em;
-  color: var(--ink);
+  color: var(--cream);
 }
 
 .winner-play-again {
