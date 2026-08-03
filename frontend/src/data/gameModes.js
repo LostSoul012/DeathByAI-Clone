@@ -16,7 +16,17 @@ export const GAME_MODES = [
   {
     id: "elimination",
     label: "Elimination",
-    blurb: "Die once and you're out. Last one standing wins.",
+    blurb: "One player eliminated every round, worst strategy goes. Last one standing wins.",
+  },
+  {
+    id: "shared_world",
+    label: "Shared World",
+    blurb: "Everyone faces the scenario together in one scene, not isolated realities.",
+  },
+  {
+    id: "all_or_nothing",
+    label: "All-or-Nothing",
+    blurb: "One shared scenario, one round. Everyone survives together, or nobody does.",
   },
 ];
 
@@ -24,17 +34,17 @@ export const AI_PERSONALITIES = [
   {
     id: "grim_reaper",
     label: "Grim Reaper",
-    blurb: "Dark, deadpan, theatrical about death. The default judge.",
+    blurb: "Dark, deadpan, treats every death as overdue paperwork. The default judge.",
   },
   {
-    id: "wholesome",
-    label: "Wholesome",
-    blurb: "Gentle and encouraging, even when you don't make it.",
+    id: "tv_host",
+    label: "TV Host",
+    blurb: "Manufactures drama out of nothing. Every round is a season finale twist.",
   },
   {
-    id: "savage",
-    label: "Savage",
-    blurb: "Brutally sarcastic. Will roast your strategy on the way out.",
+    id: "idiot_savant",
+    label: "Idiot Savant",
+    blurb: "Somehow always gets the right verdict, for the dumbest possible reason.",
   },
 ];
 

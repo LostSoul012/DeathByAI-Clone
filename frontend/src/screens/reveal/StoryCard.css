@@ -177,16 +177,34 @@
 .verdict-died     { background: var(--coral); color: #fff; }
 .verdict-died .verdict-icon { background: #fff; color: var(--coral); }
 
+/* Shared World / All-or-Nothing: everyone's outcome shown together as a
+   wrapping row of smaller tags, instead of one full-size tag for a
+   single player. */
+.verdict-outcomes-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-width: 100%;
+}
+.verdict-tag-compact {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  box-shadow: 3px 3px 0 0 var(--ink);
+}
+.verdict-tag-compact .verdict-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 0.62rem;
+}
+
 @keyframes verdict-pop {
   from { opacity: 0; transform: scale(0.7); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* Verdict-scene action button — a violet-glow pill on dark translucent
-   glass, matching the player card / progress dots already on this
-   screen, instead of the site's default light-mode sticker button
-   (cream fill, black border+shadow) which just went muddy and
-   low-contrast against the near-black backdrop here. */
+/* Reverted per feedback — back to the site's standard .btn.btn-primary
+   (same button used on the Standings screen's Continue), just with the
+   pop-in animation and positioning kept from the fixed-height footer fix. */
 .verdict-continue-btn {
   align-self: flex-start;
   animation: verdict-pop 350ms ease-out;

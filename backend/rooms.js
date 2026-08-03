@@ -9,8 +9,8 @@ const ROOM_CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const MAX_PLAYERS_PER_ROOM = 8;
 const EMPTY_ROOM_CLEANUP_MS = 5 * 60 * 1000; // 5 minutes
 
-const VALID_GAME_MODES = ["judgement_day", "blitz", "elimination"];
-const VALID_AI_PERSONALITIES = ["grim_reaper", "wholesome", "savage"];
+const VALID_GAME_MODES = ["judgement_day", "blitz", "elimination", "shared_world", "all_or_nothing"];
+const VALID_AI_PERSONALITIES = ["grim_reaper", "tv_host", "idiot_savant"];
 const DEFAULT_GAME_MODE = "judgement_day";
 const DEFAULT_AI_PERSONALITY = "grim_reaper";
 

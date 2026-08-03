@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import FateSealedScreen from "../FateSealedScreen";
 import PlayerRevealCard from "./PlayerRevealCard";
+import SharedStoryCard from "./SharedStoryCard";
 import StandingsScreen from "../StandingsScreen";
+import GroupOutcomeScreen from "../GroupOutcomeScreen";
 import { splitSentences } from "../../utils/sentences";
 
 const FATE_SEALED_DURATION_MS = 2400;
+const SHARED_NARRATIVE_MODES = new Set(["shared_world", "all_or_nothing"]);
 
 // judging -> "Your Fate Has Been Sealed" -> one PlayerRevealCard per active
 // player, in order -> Standings. Resets itself once per round (keyed off
@@ -19,7 +22,7 @@ const FATE_SEALED_DURATION_MS = 2400;
 // receives together, the reveal can't drift out of sync the way
 // independent per-client timers used to — there's nothing left to drift,
 // since nobody is running their own clock for it anymore.
-export default function RevealSequence({ room, me, onContinue, onRevealContinue }) {
+export default function RevealSequence({ room, me, onContinue, onRevealContinue, onPlayAgain }) {
   const [stage, setStage] = useState("fate-sealed"); // "fate-sealed" | "players"
   const seenRoundRef = useRef(null);
 
@@ -42,6 +45,38 @@ export default function RevealSequence({ room, me, onContinue, onRevealContinue 
 
   const results = room.game.results ?? [];
   const revealCursor = room.game.revealCursor ?? 0;
+
+  // Shared World / All-or-Nothing: every entry shares the exact same
+  // story text (see backend/groqJudge.js's parseSharedJudgeResponse), so
+  // there's only one story to walk through here, not a cumulative count
+  // across N separate players. Much simpler cursor math than the
+  // per-player walk below: the whole "round" is just this one story.
+  if (SHARED_NARRATIVE_MODES.has(room.gameMode)) {
+    // All-or-Nothing has no ranked leaderboard (everyone shares one
+    // outcome, there's nothing to rank), so it gets its own dedicated end
+    // screen instead of Standings. Shared World is a normal multi-round,
+    // individually-scored mode underneath its shared narrative, so
+    // Standings still makes sense there exactly as it does today.
+    const nextScreen =
+      room.gameMode === "all_or_nothing" ? (
+        <GroupOutcomeScreen room={room} isHost={Boolean(me?.isHost)} onContinue={onContinue} onPlayAgain={onPlayAgain} />
+      ) : (
+        <StandingsScreen room={room} isHost={Boolean(me?.isHost)} onContinue={onContinue} />
+      );
+
+    if (results.length === 0) return nextScreen;
+    const totalSentences = Math.max(splitSentences(results[0].story).length, 1);
+    if (revealCursor >= totalSentences) return nextScreen;
+
+    return (
+      <SharedStoryCard
+        results={results}
+        sentencesShown={revealCursor + 1}
+        isHost={Boolean(me?.isHost)}
+        onRevealContinue={onRevealContinue}
+      />
+    );
+  }
 
   // Walk the cumulative per-player sentence counts to find which player
   // revealCursor currently points at, and how many of their sentences

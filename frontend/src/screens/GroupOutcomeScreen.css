@@ -1,0 +1,82 @@
+.group-outcome-screen {
+  margin: auto;
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0 3rem;
+  color: var(--cream);
+  text-align: center;
+}
+
+.group-outcome-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--violet-hi);
+}
+
+.group-outcome-heading {
+  margin: 0;
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.is-survived .group-outcome-heading { color: var(--lime); }
+.is-perished .group-outcome-heading { color: var(--coral); }
+
+.group-outcome-subtext {
+  margin: 0;
+  max-width: 420px;
+  color: var(--cream-mute);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.group-outcome-avatars {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding: 1.25rem;
+  background: var(--ink-2);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 4px 4px 0 0 var(--line);
+}
+.is-survived .group-outcome-avatars { border-color: var(--lime); box-shadow: 4px 4px 0 0 var(--lime); }
+.is-perished .group-outcome-avatars { border-color: var(--coral); box-shadow: 4px 4px 0 0 var(--coral); }
+
+.group-outcome-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 76px;
+}
+
+.group-outcome-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--cream);
+  max-width: 100%;
+  word-break: break-word;
+}
+
+.group-outcome-btn {
+  margin-top: 0.5rem;
+  min-width: 200px;
+}
+
+.group-outcome-waiting {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-mute);
+}

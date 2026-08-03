@@ -9,15 +9,19 @@ const ROUND_COUNTS = {
   judgement_day: 5,
   blitz: 8,
   elimination: null, // no fixed count — see ELIMINATION_ROUND_CAP
+  shared_world: 5,
+  all_or_nothing: 1,
 };
 
 const ELIMINATION_ROUND_CAP = 10;
 
 // Per-mode timing + char limits for the scenario and strategy phases.
 const TIMER_CONFIG = {
-  judgement_day: { scenarioMs: 30_000, strategyMs: 45_000, scenarioCharLimit: 200, strategyCharLimit: 150 },
-  blitz: { scenarioMs: 15_000, strategyMs: 20_000, scenarioCharLimit: 100, strategyCharLimit: 100 },
-  elimination: { scenarioMs: 30_000, strategyMs: 45_000, scenarioCharLimit: 200, strategyCharLimit: 150 },
+  judgement_day: { scenarioMs: 45_000, strategyMs: 60_000, scenarioCharLimit: 200, strategyCharLimit: 150 },
+  blitz: { scenarioMs: 30_000, strategyMs: 40_000, scenarioCharLimit: 100, strategyCharLimit: 100 },
+  elimination: { scenarioMs: 45_000, strategyMs: 60_000, scenarioCharLimit: 200, strategyCharLimit: 150 },
+  shared_world: { scenarioMs: 45_000, strategyMs: 60_000, scenarioCharLimit: 200, strategyCharLimit: 150 },
+  all_or_nothing: { scenarioMs: 45_000, strategyMs: 60_000, scenarioCharLimit: 200, strategyCharLimit: 150 },
 };
 
 function getTimerConfig(gameMode) {

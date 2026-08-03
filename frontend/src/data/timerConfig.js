@@ -6,6 +6,8 @@ const TIMER_CONFIG = {
   judgement_day: { scenarioCharLimit: 200, strategyCharLimit: 150 },
   blitz: { scenarioCharLimit: 100, strategyCharLimit: 100 },
   elimination: { scenarioCharLimit: 200, strategyCharLimit: 150 },
+  shared_world: { scenarioCharLimit: 200, strategyCharLimit: 150 },
+  all_or_nothing: { scenarioCharLimit: 200, strategyCharLimit: 150 },
 };
 
 export function getTimerConfig(gameMode) {

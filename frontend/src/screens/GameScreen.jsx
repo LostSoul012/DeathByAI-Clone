@@ -6,6 +6,7 @@ import StrategyWritingScreen from "./StrategyWritingScreen";
 import JudgingScreen from "./JudgingScreen";
 import RevealSequence from "./reveal/RevealSequence";
 import PodiumWinnerScreen from "./PodiumWinnerScreen";
+import GroupOutcomeScreen from "./GroupOutcomeScreen";
 import SwirlBackground from "../components/SwirlBackground";
 
 // round_complete has no real screen — normal play never actually lands
@@ -57,7 +58,17 @@ export default function GameScreen({
   // gameComplete can flip true while phase is still "revealing_results"
   // (the last round's Continue triggers it), so every client needs to
   // switch the moment it sees that flag, not wait on a phase change.
+  // All-or-Nothing has no ranked leaderboard (everyone shares one
+  // outcome), so it renders the same GroupOutcomeScreen RevealSequence
+  // already showed pre-gameComplete, just with gameComplete now true —
+  // see GroupOutcomeScreen's own comment for why that's the same
+  // component both times, not two different-looking screens.
   if (gameComplete) {
+    if (room.gameMode === "all_or_nothing") {
+      return (
+        <GroupOutcomeScreen room={room} isHost={Boolean(me?.isHost)} onContinue={onContinueRound} onPlayAgain={onPlayAgain} />
+      );
+    }
     return <PodiumWinnerScreen room={room} isHost={Boolean(me?.isHost)} onPlayAgain={onPlayAgain} />;
   }
 
@@ -97,6 +108,7 @@ export default function GameScreen({
         me={me}
         onContinue={onContinueRound}
         onRevealContinue={onRevealContinue}
+        onPlayAgain={onPlayAgain}
       />
     );
   }

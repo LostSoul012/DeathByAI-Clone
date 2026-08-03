@@ -25,6 +25,7 @@ const DRAFT_DEBOUNCE_MS = 400;
 export default function StrategyWritingScreen({ room, me, onSubmitStrategy, onUpdateStrategyDraft }) {
   const [text, setText] = useState("");
   const hasSubmitted = room.game.submittedPlayerIds.includes(me.id);
+  const isEliminated = Boolean(me.eliminated);
   const charLimit = getTimerConfig(room.gameMode).strategyCharLimit;
   const { secondsRemaining, fractionRemaining, isLow } = useCountdown(room.game.strategyDeadline);
 
@@ -32,13 +33,13 @@ export default function StrategyWritingScreen({ room, me, onSubmitStrategy, onUp
   const submittedCount = room.game.submittedPlayerIds.length;
 
   useEffect(() => {
-    if (hasSubmitted) return undefined;
+    if (hasSubmitted || isEliminated) return undefined;
     const t = setTimeout(() => onUpdateStrategyDraft(text), DRAFT_DEBOUNCE_MS);
     return () => clearTimeout(t);
-  }, [text, hasSubmitted, onUpdateStrategyDraft]);
+  }, [text, hasSubmitted, isEliminated, onUpdateStrategyDraft]);
 
   function handleConfirm() {
-    if (hasSubmitted) return;
+    if (hasSubmitted || isEliminated) return;
     onSubmitStrategy(text);
   }
 
@@ -60,7 +61,12 @@ export default function StrategyWritingScreen({ room, me, onSubmitStrategy, onUp
         <CountdownTimer seconds={secondsRemaining} isLow={isLow} />
         <h1 className="strategy-heading display">Enter your survival strategy</h1>
 
-        {hasSubmitted ? (
+        {/* Eliminated players (Elimination mode only — this flag is never
+            set in other modes) can't submit, so they always see this
+            branch instead of the input, same as anyone who's already
+            submitted this round — see backend/rooms.js's serializeRoom
+            for where `eliminated` comes from on the player object. */}
+        {hasSubmitted || isEliminated ? (
           <p className="strategy-waiting mono">
             waiting for others ({submittedCount}/{activeCount} submitted)…
           </p>
