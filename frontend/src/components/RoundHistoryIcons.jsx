@@ -13,7 +13,7 @@ export default function RoundHistoryIcons({ roundHistory, totalRounds }) {
     <div className="round-history-icons">
       {slots.map((slot, i) => (
         <span key={i} className={`round-icon round-icon-${slot}`} title={`Round ${i + 1}`}>
-          {slot === "survived" ? "✓" : slot === "died" ? "☠" : ""}
+          {slot === "survived" ? "✓" : slot === "died" ? "✖" : ""}
         </span>
       ))}
     </div>

@@ -103,7 +103,7 @@ export default function StoryCard({
         <div className="verdict-footer">
           {verdictSettled && (
             <div className={`verdict-tag ${result.survived ? "verdict-survived" : "verdict-died"}`}>
-              <span className="verdict-icon">{result.survived ? "✓" : "☠"}</span>
+              <span className="verdict-icon">{result.survived ? "✓" : "✖"}</span>
               {player.username} {result.survived ? "survived" : "did not survive"}
             </div>
           )}

@@ -68,7 +68,7 @@ export default function SharedStoryCard({ results, sentencesShown = 1, isHost = 
                   key={r.username}
                   className={`verdict-tag verdict-tag-compact ${r.survived ? "verdict-survived" : "verdict-died"}`}
                 >
-                  <span className="verdict-icon">{r.survived ? "✓" : "☠"}</span>
+                  <span className="verdict-icon">{r.survived ? "✓" : "✖"}</span>
                   {r.username}
                 </div>
               ))}
