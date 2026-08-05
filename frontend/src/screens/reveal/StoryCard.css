@@ -104,13 +104,29 @@
 }
 
 /* text scrim, fading up from the bottom so it reads as one continuous
-   scene rather than a separate boxed card */
+   scene rather than a separate boxed card.
+   IMPORTANT: gradient stops are fixed lengths (rem), not percentages.
+   Percentage stops are relative to THIS BOX's own height — for a short
+   story that's fine, but Shared World's combined stories run notably
+   longer (4-8 sentences vs 2-4), and as sentences accumulate this box
+   can grow well past its original expected height. With percentage
+   stops, the same "45%/72%/100%" fade zone then stretches across
+   however tall the box happens to be, which for a long story pushed the
+   solid/legible portion down disproportionately, leaving the text near
+   the top (and the robot overlapping above it) sitting in a washed-out,
+   barely-opaque zone instead of solid black — reading as "the story only
+   starts being legible partway down" and the robot showing through
+   messily instead of being cleanly covered. Fixed-length stops instead
+   pin a small, constant-size fade band right at the top edge (near the
+   robot), with everything below that — however much "everything" is —
+   staying fully solid, so extra text length only ever extends the solid
+   region, never the fade. */
 .verdict-scrim {
   position: relative;
   z-index: 2;
   margin-top: -9rem;
-  padding: 3.5rem 0.25rem 0.5rem;
-  background: linear-gradient(to top, #050408 45%, rgba(5, 4, 8, 0.92) 72%, transparent 100%);
+  padding: 3.5rem 0.5rem 0.5rem;
+  background: linear-gradient(to bottom, transparent 0, rgba(5, 4, 8, 0.55) 3rem, #050408 6rem);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -131,7 +147,7 @@
   line-height: 1.5;
   color: var(--cream);
   min-height: 4.5rem;
-  max-width: 560px;
+  max-width: 640px;
 }
 
 /* Reserves the max space the tag+button stack could ever need, so

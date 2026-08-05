@@ -208,18 +208,22 @@ export default function Robot({
           </g>
 
           {/* held object: lives inside the robot's own coordinate space so
-              the grip and the object can never visually drift apart */}
+              the grip and the object can never visually drift apart.
+              Sized to comfortably fit the full strategy text (up to 150
+              characters) — this used to be a much smaller 190x130 slot
+              that only had room for a handful of words before
+              BoardCard.css's line-clamp cut the rest off. */}
           {isHolding && (
             <>
-              <foreignObject x="55" y="185" width="190" height="130" className="robot-held-slot">
+              <foreignObject x="38" y="160" width="224" height="155" className="robot-held-slot">
                 <div xmlns="http://www.w3.org/1999/xhtml" className="robot-held-content">
                   {heldContent}
                 </div>
               </foreignObject>
-              <circle className="robot-hand robot-hand-grip robot-hand-grip-left" cx="47" cy="252" r="24" fill={`url(#${uid}-metal-arm)`} />
-              <Fingers cx={47} cy={252} dir={1} />
-              <circle className="robot-hand robot-hand-grip robot-hand-grip-right" cx="253" cy="252" r="24" fill={`url(#${uid}-metal-arm)`} />
-              <Fingers cx={253} cy={252} dir={-1} />
+              <circle className="robot-hand robot-hand-grip robot-hand-grip-left" cx="42" cy="240" r="24" fill={`url(#${uid}-metal-arm)`} />
+              <Fingers cx={42} cy={240} dir={1} />
+              <circle className="robot-hand robot-hand-grip robot-hand-grip-right" cx="258" cy="240" r="24" fill={`url(#${uid}-metal-arm)`} />
+              <Fingers cx={258} cy={240} dir={-1} />
             </>
           )}
         </g>

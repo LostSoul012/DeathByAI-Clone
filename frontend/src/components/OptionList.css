@@ -2,15 +2,22 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  /* Comfortably fits ~3 cards before scrolling kicks in, so adding a 4th/
-     5th game mode or personality scrolls internally instead of pushing
-     the rest of the lobby/modal layout taller and breaking it. The fade
-     mask hints there's more to scroll to rather than just hard-cropping. */
-  max-height: 21rem;
+  /* Shows a little over 2 full cards before scrolling, so a 4th/5th mode
+     or personality scrolls internally instead of pushing the rest of the
+     lobby/modal layout taller — but small enough that it doesn't eat a
+     third of a phone screen by itself (this used to be 21rem, sized
+     against shorter blurb text before the personality/game-mode rewrites
+     made every card taller). */
+  max-height: 15rem;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-right: 0.35rem;
-  mask-image: linear-gradient(to bottom, transparent, black 12px, black calc(100% - 12px), transparent);
+  /* Padding on every side, not just the right — overflow-y: auto forces
+     the other axis to clip too (per the CSS overflow spec), so without
+     left/top/bottom room a selected or hovered card's border-lift
+     (translate(-2px,-2px)) and box-shadow were getting cut off against
+     the container's own edge. */
+  padding: 0.3rem 0.4rem 0.3rem 0.3rem;
+  margin: -0.3rem -0.4rem -0.3rem -0.3rem;
 }
 .option-list::-webkit-scrollbar { width: 6px; }
 .option-list::-webkit-scrollbar-track { background: transparent; }

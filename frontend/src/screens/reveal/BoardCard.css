@@ -9,7 +9,14 @@
 }
 
 .board-card-robot {
-  width: min(92%, 380px);
+  /* Was min(92%, 380px) — the board slot inside got bigger (see Robot.jsx
+     and BoardCard.css below), but the robot's actual on-screen size never
+     grew to match, so the extra slot space didn't translate into a
+     visibly bigger, more legible board like it should have. The stage
+     container (.board-card-stage above) caps at 720px, so there's ample
+     room to render this larger — bigger render also means bigger
+     effective text size for the strategy inside it, not just more room. */
+  width: min(97%, 460px);
   height: auto;
 }
 
@@ -27,12 +34,12 @@
   color: var(--ink);
   border: 3px solid var(--ink);
   border-radius: var(--radius);
-  padding: 0.9rem 1.1rem 0.85rem;
+  padding: 0.6rem 0.75rem 0.55rem;
   box-shadow: 6px 6px 0 0 var(--ink);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   font-family: var(--font-display);
   transform: scale(0.82) translateY(8px);
   opacity: 0;
@@ -46,28 +53,35 @@
 .board-card::before {
   content: "// BOARD";
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   color: var(--violet);
 }
 
 .board-card span {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--cream-mute);
 }
 
+/* Was clamped to 3 lines at 1.1rem — the board's foreignObject slot only
+   had room for roughly a handful of words before overflow:hidden cut the
+   rest, well short of the full 150-character strategy limit. The slot
+   itself is bigger now (see Robot.jsx's held-object comment), and a
+   smaller font + more permitted lines here means what actually fits
+   comfortably matches the real character limit instead of an arbitrary
+   fraction of it. */
 .board-card strong {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.1rem;
-  line-height: 1.22;
+  font-size: 0.82rem;
+  line-height: 1.28;
   color: var(--ink);
   animation: card-text-in 300ms ease-out;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
