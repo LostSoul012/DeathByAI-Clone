@@ -66,22 +66,19 @@
   color: var(--cream-mute);
 }
 
-/* Was clamped to 3 lines at 1.1rem — the board's foreignObject slot only
-   had room for roughly a handful of words before overflow:hidden cut the
-   rest, well short of the full 150-character strategy limit. The slot
-   itself is bigger now (see Robot.jsx's held-object comment), and a
-   smaller font + more permitted lines here means what actually fits
-   comfortably matches the real character limit instead of an arbitrary
-   fraction of it. */
+/* font-size and -webkit-line-clamp are set inline per-instance in
+   BoardCard.jsx (boardTextFontSize/boardTextLineClamp), scaling from
+   1.2rem down to 0.6rem based on strategy length — a single fixed size
+   either wasted the board's space on short strategies or had to be
+   tuned conservative enough to fit the longest ones at the cost of every
+   short one looking needlessly cramped. */
 .board-card strong {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.82rem;
   line-height: 1.28;
   color: var(--ink);
   animation: card-text-in 300ms ease-out;
   display: -webkit-box;
-  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

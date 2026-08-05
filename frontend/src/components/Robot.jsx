@@ -212,7 +212,15 @@ export default function Robot({
               Sized to comfortably fit the full strategy text (up to 150
               characters) — this used to be a much smaller 190x130 slot
               that only had room for a handful of words before
-              BoardCard.css's line-clamp cut the rest off. */}
+              BoardCard.css's line-clamp cut the rest off.
+              Hand cx values (26/274) are deliberately well outside the
+              board's own edges (38/262) — only about 12 of the hand's 24
+              radius should ever overlap onto the board itself, just
+              enough to read as fingertips gripping the edge. They used
+              to sit at 42/258, barely inside the board's edges at all,
+              which meant roughly HALF of each hand circle sat on top of
+              the board, covering the first couple characters of every
+              line of text. */}
           {isHolding && (
             <>
               <foreignObject x="38" y="160" width="224" height="155" className="robot-held-slot">
@@ -220,10 +228,10 @@ export default function Robot({
                   {heldContent}
                 </div>
               </foreignObject>
-              <circle className="robot-hand robot-hand-grip robot-hand-grip-left" cx="42" cy="240" r="24" fill={`url(#${uid}-metal-arm)`} />
-              <Fingers cx={42} cy={240} dir={1} />
-              <circle className="robot-hand robot-hand-grip robot-hand-grip-right" cx="258" cy="240" r="24" fill={`url(#${uid}-metal-arm)`} />
-              <Fingers cx={258} cy={240} dir={-1} />
+              <circle className="robot-hand robot-hand-grip robot-hand-grip-left" cx="26" cy="240" r="24" fill={`url(#${uid}-metal-arm)`} />
+              <Fingers cx={26} cy={240} dir={1} />
+              <circle className="robot-hand robot-hand-grip robot-hand-grip-right" cx="274" cy="240" r="24" fill={`url(#${uid}-metal-arm)`} />
+              <Fingers cx={274} cy={240} dir={-1} />
             </>
           )}
         </g>
