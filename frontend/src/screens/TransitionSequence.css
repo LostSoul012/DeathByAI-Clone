@@ -38,6 +38,15 @@
     color-mix(in oklab, var(--lime) 10%, transparent) 270deg,
     transparent 360deg
   );
+  /* conic-gradient only fades by ANGLE — it has no concept of distance
+     from center, so without this the rays held constant intensity all
+     the way out to the screen edges instead of naturally tapering off.
+     That's what read as a hard, geometric-looking cutoff (a visible edge
+     where a band just abruptly stops) rather than a soft light effect.
+     This mask fades the whole layer out with distance from center,
+     independent of the conic-gradient's own angular fades, so the rays
+     taper off before they ever reach a hard edge. */
+  mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 65%);
   pointer-events: none;
   animation: transition-sweep 8s linear infinite;
   opacity: 0.6;
