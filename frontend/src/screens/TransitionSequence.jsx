@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import "./TransitionSequence.css";
 
 const INCOMING_MS = 1400;
-const PROMPT_MS = 1900;
+const PROMPT_MS = 3200;
 
 // Two short beats shown to every player once the scenario is confirmed —
 // "Scenario Incoming!" then "Prompt: <text>" — then calls onComplete so

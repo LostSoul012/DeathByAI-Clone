@@ -20,7 +20,7 @@ export default function SwirlBackground({ theme = "purple", children }) {
       <svg
         className="swirl-svg"
         viewBox="0 0 200 200"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
       >
         {rings.map((ring, i) => (
