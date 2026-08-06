@@ -2,7 +2,7 @@ import "./OptionList.css";
 
 export default function OptionList({ options, selectedId, onSelect, disabled }) {
   return (
-    <div className="option-list" role="radiogroup">
+    <div id="personality" className="option-list" role="radiogroup">
       {options.map((opt) => (
         <button
           key={opt.id}

@@ -19,6 +19,9 @@
   padding: 0.3rem 0.4rem 0.3rem 0.3rem;
   margin: -0.3rem -0.4rem -0.3rem -0.3rem;
 }
+#personality{
+  max-height: none !important;
+}
 .option-list::-webkit-scrollbar { width: 6px; }
 .option-list::-webkit-scrollbar-track { background: transparent; }
 .option-list::-webkit-scrollbar-thumb {

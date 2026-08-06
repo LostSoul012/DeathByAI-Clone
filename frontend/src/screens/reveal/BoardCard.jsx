@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Robot from "../../components/Robot";
 import "./BoardCard.css";
 
-const REVEAL_DELAY_MS = 240;
-const TEXT_REVEAL_DELAY_MS = 800;
+const REVEAL_DELAY_MS = 180;
+const TEXT_REVEAL_DELAY_MS = 400;
 const HOLD_BEFORE_CONTINUE_MS = 5500;
 
 // A single fixed font-size either wasted space on short strategies (they

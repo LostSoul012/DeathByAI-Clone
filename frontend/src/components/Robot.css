@@ -122,6 +122,25 @@
 .robot-pose-holding.robot-has-held .robot-arm-left  { animation: none; transform: rotate(-51.5deg); }
 .robot-pose-holding.robot-has-held .robot-arm-right { animation: none; transform: rotate(51.5deg); }
 
+/* The arm's own hand/fingers/shine (its default resting-position grip,
+   just rotated along with the rest of the arm above) used to stay
+   visible right alongside the dedicated robot-hand-grip-left/right pair
+   (siblings of these arm groups, positioned precisely against the held
+   object's edges — see Robot.jsx's held-object comment). Both were
+   trying to solve the same problem — get a hand to the grip point — via
+   two different techniques at once, which meant two full hands (and two
+   sets of fingers) rendered on top of each other. Keeping the arm's own
+   rotation (it angles the arm segment itself nicely toward the board)
+   but hiding just its hand-shaped parts leaves exactly one hand per side. */
+.robot-pose-holding.robot-has-held .robot-arm-left .robot-hand,
+.robot-pose-holding.robot-has-held .robot-arm-left .robot-hand-shine,
+.robot-pose-holding.robot-has-held .robot-arm-left .robot-fingers,
+.robot-pose-holding.robot-has-held .robot-arm-right .robot-hand,
+.robot-pose-holding.robot-has-held .robot-arm-right .robot-hand-shine,
+.robot-pose-holding.robot-has-held .robot-arm-right .robot-fingers {
+  display: none;
+}
+
 /* random one-arm gesture while narrating: brief outward lift-and-settle,
    overrides whatever sway animation is currently running via higher
    selector specificity (two classes beat one) */
