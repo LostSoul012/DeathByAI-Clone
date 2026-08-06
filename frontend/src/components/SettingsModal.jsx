@@ -8,6 +8,7 @@ export default function SettingsModal({ room, isHost, onSetAiPersonality, onClos
       <section>
         <h3 className="settings-heading mono">AI Judge Personality</h3>
         <OptionList
+          id="personality"
           options={AI_PERSONALITIES}
           selectedId={room.aiPersonality}
           onSelect={onSetAiPersonality}

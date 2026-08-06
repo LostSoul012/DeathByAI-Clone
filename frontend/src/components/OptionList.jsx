@@ -1,8 +1,8 @@
 import "./OptionList.css";
 
-export default function OptionList({ options, selectedId, onSelect, disabled }) {
+export default function OptionList({ id, options, selectedId, onSelect, disabled }) {
   return (
-    <div id="personality" className="option-list" role="radiogroup">
+    <div id={id} className="option-list" role="radiogroup">
       {options.map((opt) => (
         <button
           key={opt.id}
