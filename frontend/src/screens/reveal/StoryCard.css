@@ -8,6 +8,17 @@
   flex-direction: column;
   position: relative;
   min-height: 70vh;
+  /* No max-width here before meant this spanned the FULL viewport width
+     on desktop — narrow mobile viewports happened to look fine purely by
+     coincidence (the viewport itself was already card-width), but on a
+     wide window the robot centered itself within that huge space (via
+     .verdict-robot-wrap's own centering below) while the story text,
+     which was never centered or width-capped at the stage level, stayed
+     pinned flush against the left edge — the two ended up nowhere near
+     each other instead of reading as one composition. */
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .verdict-player-card {

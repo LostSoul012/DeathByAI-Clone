@@ -46,7 +46,7 @@
      This mask fades the whole layer out with distance from center,
      independent of the conic-gradient's own angular fades, so the rays
      taper off before they ever reach a hard edge. */
-  mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 65%);
+  mask-image: radial-gradient(ellipse at 50% 50%, black 0%, transparent 55%);
   pointer-events: none;
   animation: transition-sweep 8s linear infinite;
   opacity: 0.6;
